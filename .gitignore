@@ -1,0 +1,7 @@
+# Download cache. Rebuilt by run.R, roughly 150 MB, never committed.
+data-raw/
+
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store
