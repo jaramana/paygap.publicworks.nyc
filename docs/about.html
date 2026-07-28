@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About and method — thepaygap.nyc</title>
+<meta name="description" content="Where these numbers come from, a short history of the civil service title, what the method cannot see, and six corrections to the 2020 version of this site.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/about.js" defer></script>
+<style>
+  .toc { list-style: none; padding: 0; margin: 2rem 0; columns: 2; column-gap: 2rem; }
+  .toc li { margin-bottom: .35rem; break-inside: avoid; }
+  .prose h2 { margin-top: 3rem; }
+  .prose h3 { margin-top: 2rem; }
+  .prose ol, .prose ul { max-width: var(--measure); }
+  .prose li { margin-bottom: .5rem; }
+  @media (max-width: 40rem) { .toc { columns: 1; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap hero">
+    <p class="eyebrow">About</p>
+    <h1>How this works, and what it cannot see</h1>
+    <p class="lede">
+      Every number on this site can be traced back to a public dataset and a
+      published script. This page explains where the data comes from, why a
+      civil service title is a strange and specific thing, and the places where
+      the method is genuinely weak.
+    </p>
+  </section>
+
+  <section class="wrap prose">
+    <ul class="toc">
+      <li><a href="#why">Why this exists</a></li>
+      <li><a href="#history">A short history of the title</a></li>
+      <li><a href="#opendata">How the payroll became public</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#limits">What this cannot see</a></li>
+      <li><a href="#corrections">Corrections to the 2020 figures</a></li>
+      <li><a href="#sources">Sources</a></li>
+      <li><a href="#reuse">Reuse</a></li>
+    </ul>
+
+    <h2 id="why">Why this exists</h2>
+    <p>
+      The City of New York publishes its entire payroll. Names, titles, agencies,
+      base salaries, overtime, going back to fiscal year 2014. It is one of the
+      more remarkable acts of municipal transparency anywhere, and almost nobody
+      uses it, because a 6.8 million row spreadsheet is not an answer to a question.
+    </p>
+    <p>
+      This site began with one question, asked by one person about one title:
+      what has an Emergency Preparedness Specialist actually been paid, in real
+      money, since 2014? Working that out by hand turned out to be genuinely
+      useful in a room full of colleagues trying to make a case about wages. The
+      obvious next thought was that there are about 1,500 other titles, and every
+      one of them has people who would like the same answer.
+    </p>
+    <p>
+      So the test for everything here is simple. Could a civil servant open this
+      the week before a union meeting and find the number they need? Everything
+      that serves that goal is in. Everything that only makes the site look
+      impressive is out.
+    </p>
+
+    <h2 id="history">A short history of the title</h2>
+    <p>
+      The civil service title is not a job description. It is a legal category,
+      and understanding that explains most of what looks odd in this data.
+    </p>
+    <p>
+      Before the 1880s, government jobs in New York were distributed through
+      patronage. You worked for the city because a political organisation put you
+      there, and you could be removed the same way. The reaction against that
+      system produced the
+      <a href="https://www.archives.gov/milestone-documents/pendleton-act">Pendleton Civil Service Reform Act</a>,
+      signed on 16 January 1883, which established competitive examination as the
+      basis for federal hiring. The act was drafted largely by the New York Civil
+      Service Reform Association, written by Dorman B. Eaton and sponsored by
+      Senator George H. Pendleton of Ohio.
+    </p>
+    <p>
+      New York State followed the same year, becoming the first state to adopt a
+      merit system, on a bill sponsored in the Assembly by a young Theodore
+      Roosevelt. The principle that survived into the present is that a public job
+      belongs to the public rather than to whoever is in office, and that the way
+      to make that true is to define the job in advance, test for it, and pay it
+      on a published schedule.
+    </p>
+    <p>
+      That is where titles come from. A title is a defined class of work with an
+      examination attached and a negotiated pay rate, administered today by the
+      <a href="https://www.nyc.gov/site/dcas/employment/more-about-civil-service.page">Department of Citywide Administrative Services</a>.
+      Positions fall into four jurisdictional classes: competitive, non-competitive,
+      exempt and labor. Competitive titles are the classic case, filled from a list
+      of people who sat an exam. DCAS runs more than 180 exams a year for over
+      110,000 candidates.
+    </p>
+    <p>
+      This is why the payroll contains close to two thousand distinct titles, many
+      of them oddly specific, some of them holding three people, some carrying names
+      that have not described the actual work since the 1970s. Titles accumulate.
+      Creating one requires classification work and bargaining; retiring one strands
+      the people in it. The result is a living archive of every job the City has
+      ever decided it needed, which is genuinely useful for analysis and genuinely
+      confusing for anyone trying to find themselves in it.
+    </p>
+    <p>
+      It also matters for pay. Because the title carries the rate, a pay argument
+      in New York City government is usually an argument about a title: whether it
+      is classified correctly, whether its rate has kept up, whether the work has
+      outgrown the definition. That is the argument this site is trying to supply
+      evidence for.
+    </p>
+
+    <h2 id="opendata">How the payroll became public</h2>
+    <p>
+      The City Council passed the Open Data Law on 29 February 2012 and Mayor
+      Bloomberg signed it as
+      <a href="https://opendata.cityofnewyork.us/open-data-law/">Local Law 11 of 2012</a>
+      on 7 March. It required every City agency to publish its public data sets on
+      a single portal, with a deadline of the end of 2018, and it built on the
+      access rights already established by the State Freedom of Information Law of
+      1974. Amendments in 2015, 2016 and 2017 tightened it further, including a
+      requirement that datasets identified after the 2018 deadline still be
+      published.
+    </p>
+    <p>
+      Citywide Payroll Data appeared on that portal covering fiscal year 2014
+      onward. It is the reason this site can exist, and it is worth saying that the
+      law is the achievement here. The analysis is comparatively easy. Getting a
+      municipal government to publish what it pays every one of its employees,
+      every year, in a machine-readable format, was not.
+    </p>
+
+    <h2 id="method">Method</h2>
+
+    <h3>Fiscal years</h3>
+    <p>
+      New York City fiscal years run 1 July to 30 June, so FY2025 covers July 2024
+      through June 2025. Inflation adjustment uses the twelve-month average of the
+      New York-area consumer price index across each fiscal year, rather than a
+      single month's reading.
+    </p>
+
+    <h3>Inflation and rent</h3>
+    <p>
+      Prices are the BLS consumer price index for all urban consumers in the
+      New York-Newark-Jersey City area, series CUURS12ASA0. Rent is the same
+      programme's index for rent of primary residence in that area, CUURS12ASEHA.
+      Using a national index for New York wages would understate what New Yorkers
+      lost, which is why it is not used here. Zillow's rent index appears alongside
+      the BLS series in dollar terms, and the difference between the two is
+      explained on the <a href="wages.html">pay against rent</a> page.
+    </p>
+
+    <h3>Who is counted</h3>
+    <p>
+      Headline salary figures cover employees paid per annum with an active leave
+      status at 30 June. Hourly and day-rate workers are analysed separately on
+      their <a href="hourly.html">own page</a>, because a rate and a salary are
+      different quantities and averaging them together produces nonsense.
+    </p>
+
+    <h3>Medians, not just means</h3>
+    <p>
+      Salary distributions are right-skewed, so the mean sits above what a typical
+      jobholder earns. Both are reported, and the median leads.
+    </p>
+
+    <h3>Small groups are suppressed</h3>
+    <p>
+      Any group with fewer than 30 people has its statistics withheld. A
+      three-person agency will produce a spectacular pay gap that is really one
+      person's salary. Suppressed rows remain in the downloadable data with a
+      flag, so nothing is hidden, it is only kept off the charts.
+    </p>
+
+    <h3>Gender</h3>
+    <p>
+      The payroll does not record gender. Estimates here come from matching first
+      names against Social Security Administration birth registrations from 1880
+      onward, weighting each person by the proportion of that name registered male
+      or female. Names with fewer than 25 registrations are not used, because a
+      handful of records would swing the weight to a certainty.
+    </p>
+
+    <h2 id="limits">What this cannot see</h2>
+    <ul>
+      <li>
+        <strong>Gender identity.</strong> The name proxy estimates sex recorded at
+        birth. It cannot see anyone who is transgender or non-binary, and it says
+        nothing reliable about any individual, only about large groups.
+      </li>
+      <li>
+        <strong>About one employee in ten.</strong> Name matching covers roughly
+        89% of the workforce, and that share falls slightly every year as the
+        workforce diversifies. Anyone unmatched is absent from the gender figures.
+      </li>
+      <li>
+        <strong>Race and ethnicity.</strong> The payroll does not record them.
+        The name-origin comparison on the <a href="gender.html#names">gender page</a>
+        is a crude proxy for national origin and should be read as such.
+      </li>
+      <li>
+        <strong>Total public service.</strong> Tenure is time at the current
+        agency. Someone who transferred between agencies reads as newer than they
+        are, which makes the compression and retirement figures conservative.
+      </li>
+      <li>
+        <strong>Why anyone left.</strong> The CEASED status mixes quits,
+        retirements, seasonal endings, layoffs and deaths with no way to separate
+        them.
+      </li>
+      <li>
+        <strong>Whether overtime was chosen.</strong> Hours and dollars are
+        recorded; mandated shifts and volunteered ones look identical.
+      </li>
+      <li>
+        <strong>Take-home pay.</strong> All figures are gross, before tax, pension
+        and health contributions.
+      </li>
+      <li>
+        <strong>Whether pay is fair.</strong> This site measures what people are
+        paid, not what the work is worth. That second question is a political one
+        and no dataset settles it.
+      </li>
+    </ul>
+
+    <h2 id="corrections">Corrections to the 2020 figures</h2>
+    <p>
+      An earlier version of this site ran from 2020 to 2022 on a single script that
+      had errors in it. They changed published numbers, so anyone who cited the old
+      site should know what moved. All six are fixed here.
+    </p>
+    <ol>
+      <li>
+        <strong>The pay gap formula was wrong.</strong> It divided the difference
+        between men's and women's pay by the sum of the two rather than by men's
+        pay. Every gap figure published was roughly half its true size. The
+        citywide FY2021 figure shown as 1.1% should have read about 2.2%.
+      </li>
+      <li>
+        <strong>Summary tables were computed from stale data.</strong> Each table
+        reused a grouped data frame left over from the previous loop instead of
+        rebuilding it, so those files did not describe the year they claimed to.
+      </li>
+      <li>
+        <strong>The uncommon-names chart computed the gender gap instead,</strong>
+        through a copy-paste error, and then wrote its output over the gender-gap
+        file. There was never any published uncommon-names chart data.
+      </li>
+      <li>
+        <strong>Inflation used the national index</strong> pinned to a single
+        November reading, for fiscal years ending 30 June.
+      </li>
+      <li>
+        <strong>The downloads were not machine-readable,</strong> shipping values
+        like "$67,980" and "1.8%" as text.
+      </li>
+      <li>
+        <strong>The 200-employee filter was applied inconsistently,</strong> to
+        charts but not to the main download, contrary to what the site said.
+      </li>
+    </ol>
+    <p>
+      Two further changes are improvements rather than fixes. Names are matched
+      against the SSA national file instead of the New York state file, which
+      raises coverage substantially in a city where most employees were not born
+      in New York. And medians are reported alongside means.
+    </p>
+
+    <h2 id="sources">Sources</h2>
+    <ul>
+      <li><a href="https://data.cityofnewyork.us/d/k397-673e">NYC Citywide Payroll Data (Fiscal Year)</a>, NYC Open Data</li>
+      <li><a href="https://www.bls.gov/cpi/">Consumer Price Index</a>, US Bureau of Labor Statistics, New York area series</li>
+      <li><a href="https://www.zillow.com/research/data/">Zillow Observed Rent Index</a>, New York metro</li>
+      <li><a href="https://www.ssa.gov/oact/babynames/limits.html">Popular Baby Names</a>, Social Security Administration</li>
+      <li><a href="https://opendata.cityofnewyork.us/open-data-law/">Local Law 11 of 2012</a>, the NYC Open Data Law</li>
+      <li><a href="https://www.archives.gov/milestone-documents/pendleton-act">Pendleton Civil Service Reform Act, 1883</a>, US National Archives</li>
+    </ul>
+
+    <h2 id="reuse">Reuse</h2>
+    <p>
+      The <a href="https://github.com/jaramana/thepaygap.nyc">source is on GitHub</a>
+      under a BSD 3-Clause licence, and the
+      <a href="downloads.html">derived data</a> is free to reuse with attribution.
+      If you find an error, open an issue. Corrections are the point.
+    </p>
+    <p class="muted" id="build-note"></p>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

@@ -184,8 +184,9 @@ export_citywide <- function(a, prep) {
                               uncommon_mean, gap, gap_dollars, uncommon_share))),
     hourly        = round_cols(as.data.frame(a$hourly_summary %>%
                        select(fiscal_year, n_roster, n_placeholder, n_zero_hours,
-                              n, median_rate, p10, p90, n_substantial,
-                              median_rate_substantial, median_gross,
+                              n, median_rate, real_median_rate, p10, p90,
+                              n_substantial, median_rate_substantial,
+                              real_median_rate_substantial, median_gross,
                               real_median_gross, median_hours, pct_substantial)))
   )
 

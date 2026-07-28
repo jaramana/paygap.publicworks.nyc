@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay against rent — thepaygap.nyc</title>
+<meta name="description" content="Which City of New York job titles kept up with inflation and rent since 2014, and which lost ground in real terms.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/wages.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap hero">
+    <p class="eyebrow">Chapter one</p>
+    <h1>Pay against rent</h1>
+    <p class="lede">
+      A raise that trails inflation is a pay cut, and a raise that trails New York
+      rent is a pay cut you feel on the first of the month. Here is which titles
+      kept up and which did not, in real terms, since fiscal year 2014.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <dl class="stats" id="wage-stats"></dl>
+
+    <figure>
+      <div id="index-chart" class="chart"></div>
+      <figcaption id="index-caption"></figcaption>
+    </figure>
+
+    <div class="note-box">
+      <p>
+        <strong>Two rent measures, on purpose.</strong> The rent line above is
+        the Bureau of Labor Statistics index for rent of primary residence in
+        the New York area. It tracks what sitting tenants actually pay, and it
+        is built the same way as the inflation line, so the two are directly
+        comparable. The dollar figures below come from Zillow, which measures
+        asking rents on units currently listed. Zillow is more visceral and less
+        representative: if you have not moved recently, the BLS line is closer
+        to your life.
+      </p>
+    </div>
+
+    <figure>
+      <div id="rent-chart" class="chart"></div>
+      <figcaption id="rent-caption"></figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap">
+    <h2>Who lost ground</h2>
+    <p class="prose">
+      Real change in median base salary since a title's first reportable year,
+      after adjusting for New York-area inflation. Only titles with at least 200
+      people in the latest year are shown, because small groups swing wildly for
+      reasons that have nothing to do with pay policy.
+    </p>
+    <figure>
+      <div id="losers-chart" class="chart"></div>
+      <figcaption>Largest real-terms declines. Negative means pay grew more slowly than New York prices.</figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap">
+    <h2>Every title</h2>
+    <p class="prose">
+      Sort by any column. Real change is the honest one: it already accounts for
+      inflation, so a positive number means genuine gained ground.
+    </p>
+    <div id="wage-table"></div>
+    <div class="note-box">
+      <p>
+        <strong>Why some titles start after 2014.</strong> Titles are created,
+        renamed and retired. Each is indexed against its own first year with at
+        least 30 people, which is shown in the table, so a title that appeared in
+        2019 is not silently compared against a 2014 baseline it never had.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The gender gap — thepaygap.nyc</title>
+<meta name="description" content="The City of New York gender pay gap, separated into unequal pay within the same title and women being concentrated in lower-paid titles.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/gender.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap hero">
+    <p class="eyebrow">Chapter five</p>
+    <h1>The gender gap, taken apart</h1>
+    <p class="lede">
+      A single gap number hides two different problems that need two different
+      remedies. One is people being paid differently for the same job. The other
+      is women being concentrated in jobs that pay less. For the City of New York,
+      it is overwhelmingly the second.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <div class="note-box caution">
+      <p>
+        <strong>How gender is inferred here, and why that matters.</strong> The
+        City payroll does not record gender. Every figure on this page comes from
+        matching first names against Social Security birth registrations and
+        weighting each person by how often their name was registered male or
+        female. That is a proxy for sex recorded at birth. It does not know
+        anyone's gender identity, it cannot see non-binary people at all, and it
+        misses roughly one employee in ten whose name is not in the SSA data.
+        Treat these as estimates of a population pattern, never as facts about
+        any individual.
+      </p>
+    </div>
+
+    <dl class="stats" id="g-stats"></dl>
+
+    <h2>Two gaps, not one</h2>
+    <p class="prose">
+      The total gap splits into a <strong>within-title</strong> part, which is
+      what remains when you compare men and women holding the same title, and a
+      <strong>between-title</strong> part, which is what comes from men and women
+      being distributed differently across titles.
+    </p>
+    <figure>
+      <div id="decomp-chart" class="chart"></div>
+      <figcaption id="decomp-cap"></figcaption>
+    </figure>
+
+    <div class="note-box">
+      <p>
+        <strong>Why this distinction is the whole point.</strong> If the gap were
+        mostly within-title, the remedy would be pay audits and corrections inside
+        job classifications. Because it is mostly between-title, the remedy is
+        about which jobs people can get into and how those jobs are valued: hiring,
+        promotion pathways, and whether historically female-dominated titles are
+        paid comparably to male-dominated ones doing work of similar skill. Those
+        are slower and more political fixes, which may be why the simpler number
+        gets quoted more often.
+      </p>
+    </div>
+
+    <h2>The gap over time</h2>
+    <figure>
+      <div id="trend-chart" class="chart"></div>
+      <figcaption id="trend-cap"></figcaption>
+    </figure>
+
+    <h2>By title</h2>
+    <p class="prose">
+      Within a single title, where the same work is more likely being compared.
+      Titles with at least 200 people.
+    </p>
+    <div id="g-title-table"></div>
+
+    <h2>By agency</h2>
+    <div id="g-agency-table"></div>
+
+    <h2 id="names">A second gap, on names</h2>
+    <p class="prose">
+      The same name data supports a different comparison: employees whose first
+      name appears in US birth records against those whose does not.
+    </p>
+    <div class="note-box caution">
+      <p>
+        <strong>Say plainly what this measures.</strong> The earlier version of
+        this site called it "uncommon names", which sounds neutral. It is not.
+        Whether your first name appears in American birth registrations is largely
+        a function of whether you or your parents were born in the United States.
+        This is a proxy for national origin and ethnicity wearing a tidy label, and
+        it is published here because the gap it reveals is real and larger than the
+        gender gap, not because the category is a natural one.
+      </p>
+    </div>
+    <figure>
+      <div id="origin-chart" class="chart"></div>
+      <figcaption id="origin-cap"></figcaption>
+    </figure>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

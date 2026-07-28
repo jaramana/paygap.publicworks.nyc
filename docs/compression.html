@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salary compression — thepaygap.nyc</title>
+<meta name="description" content="City of New York titles where new hires now earn as much as colleagues with ten years of service.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/compression.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap hero">
+    <p class="eyebrow">Chapter four</p>
+    <h1>Experience stopped paying</h1>
+    <p class="lede">
+      Salary compression is when the pay gap between a new hire and a long-serving
+      colleague narrows to nothing. It is one of the most common grievances in
+      public sector bargaining and one of the least documented. The City payroll
+      records a start date for almost every employee, so it can be measured.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <dl class="stats" id="comp-stats"></dl>
+
+    <h2>Where a decade buys the least</h2>
+    <p class="prose">
+      Each row compares the median base salary of people hired in the last two
+      years against colleagues in the same title with more than ten years at the
+      agency. Where the two dots nearly touch, experience is worth nothing in
+      salary terms.
+    </p>
+    <figure>
+      <div id="comp-chart" class="chart"></div>
+      <figcaption id="comp-cap"></figcaption>
+    </figure>
+
+    <div class="note-box caution">
+      <p>
+        <strong>Read this carefully, it has a real limitation.</strong> Tenure
+        here is time at the <em>current agency</em>, not time in public service.
+        Someone with twenty years at another agency who transferred last year
+        counts as a new hire. That makes these figures a floor: real compression
+        is probably somewhat less severe than the raw comparison suggests in
+        titles where transfers are common, and about right where they are not.
+      </p>
+      <p>
+        A ratio near 1.0 is also not automatically bad. Some titles are flat by
+        design, with a single negotiated rate and no seniority steps at all. What
+        the number tells you is whether staying produces a raise, not whether the
+        pay is fair.
+      </p>
+    </div>
+
+    <h2>Every title</h2>
+    <p class="prose">
+      Both cohorts need at least 30 people for a title to appear, so a handful of
+      unusual salaries cannot drive the result.
+    </p>
+    <div id="comp-table"></div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

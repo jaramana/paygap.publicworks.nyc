@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find your title — thepaygap.nyc</title>
+<meta name="description" content="Search any City of New York civil service title for its salary range, headcount, overtime, tenure and real pay history since 2014.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/explorer.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap hero">
+    <p class="eyebrow">The tool</p>
+    <h1>Find your title</h1>
+    <p class="lede">
+      Type a civil service title. You get the actual salary range rather than
+      just an average, how many people hold it, which agencies employ it, how
+      much of the pay comes from overtime, and whether it has kept up with
+      New York since 2014.
+    </p>
+
+    <div class="search-shell">
+      <label for="title-search" class="eyebrow" style="display:block">Search titles</label>
+      <input type="search" id="title-search" autocomplete="off" role="combobox"
+             aria-expanded="false" aria-controls="title-results" aria-autocomplete="list"
+             placeholder="Emergency Preparedness Specialist…" style="width:100%;max-width:none">
+      <ul class="results" id="title-results" role="listbox" aria-label="Matching titles"></ul>
+    </div>
+    <div class="pill-row" id="suggestions"></div>
+  </section>
+
+  <section class="wrap" id="title-detail" hidden>
+    <h2 id="t-name" style="margin-top:1.5rem"></h2>
+    <p class="muted" id="t-sub"></p>
+
+    <dl class="stats" id="t-stats"></dl>
+
+    <h3>What it pays</h3>
+    <figure>
+      <div id="t-range" class="chart"></div>
+      <figcaption id="t-range-cap"></figcaption>
+    </figure>
+
+    <h3>Against New York</h3>
+    <figure>
+      <div id="t-index" class="chart"></div>
+      <figcaption id="t-index-cap"></figcaption>
+    </figure>
+
+    <div id="t-ot-block">
+      <h3>Overtime</h3>
+      <figure>
+        <div id="t-ot" class="chart"></div>
+        <figcaption id="t-ot-cap"></figcaption>
+      </figure>
+    </div>
+
+    <div id="t-tenure-block">
+      <h3>How long people stay</h3>
+      <figure>
+        <div id="t-tenure" class="chart"></div>
+        <figcaption id="t-tenure-cap"></figcaption>
+      </figure>
+    </div>
+
+    <div id="t-agency-block">
+      <h3>Who employs this title</h3>
+      <div id="t-agencies"></div>
+      <p class="muted" style="font-size:.85rem;margin-top:.6rem">
+        Agencies with fewer than five people in the title are not listed.
+      </p>
+    </div>
+
+    <div class="note-box">
+      <p>
+        <strong>Base salary is not take-home.</strong> These figures are the
+        annual base rate the City records. They exclude overtime, differentials
+        and other pay, and they are before tax, pension and health contributions.
+        The overtime section above shows the difference where it is large.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap" id="browse-block">
+    <h2>Or browse all titles</h2>
+    <div id="all-titles"></div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>
