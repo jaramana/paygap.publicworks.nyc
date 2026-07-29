@@ -89,10 +89,11 @@
     document.getElementById('e-range-cap').innerHTML =
       'FY' + latest.fiscal_year + ': lowest-paid tenth under <strong>' +
       f.dollars(latest.p10) + '</strong>, highest-paid tenth over <strong>' +
-      f.dollars(latest.p90) + '</strong>. A wide band usually means the ' +
+      f.dollars(latest.p90) + '</strong>.' +
+      '<span class="qual">A wide band usually means the ' +
       (isAgency ? 'agency spans many different titles'
                 : 'title spans several pay levels or agencies') +
-      ', not that identical work is paid very differently.';
+      ', not that identical work is paid very differently.</span>';
 
     // ---- Real terms ----------------------------------------------
     var w = d.wages.filter(function (r) {
@@ -144,8 +145,9 @@
       document.getElementById('e-ot-cap').innerHTML =
         'FY' + otLast.fiscal_year + ': <strong>' + f.pct(otLast.ot_share_of_pay) +
         '</strong> of pay came from overtime, and ' + f.pct(otLast.pct_with_ot, 0) +
-        ' worked some. The data records hours and dollars, not whether a shift ' +
-        'was volunteered or mandated.';
+        ' worked some.' +
+        '<span class="qual">The data records hours and dollars, not whether a ' +
+        'shift was volunteered or mandated.</span>';
     } else {
       otBlock.hidden = true;
     }
@@ -171,9 +173,9 @@
       document.getElementById('e-comp-cap').innerHTML =
         'FY' + cLast.fiscal_year + ': ten or more years is worth <strong class="' +
         (prem > 0 ? 'pos' : 'neg') + '">' + (prem >= 0 ? '+' : '−') +
-        f.dollars(Math.abs(prem)) + '</strong> against a recent hire. Tenure is ' +
-        'time at the current agency, so anyone who transferred in reads as newer ' +
-        'than they are, which makes this a conservative figure.';
+        f.dollars(Math.abs(prem)) + '</strong> against a recent hire.' +
+        '<span class="qual">Tenure is time at the current agency, so anyone who ' +
+        'transferred in reads as newer than they are. This is a conservative figure.</span>';
     } else {
       cBlock.hidden = true;
     }
@@ -217,9 +219,9 @@
         'Active records went ' + f.num(h0.n) + ' → ' + f.num(h1.n) + ' between FY' +
         h0.fiscal_year + ' and FY' + h1.fiscal_year + '.' +
         (sep && sep.separation_rate != null
-          ? ' In FY' + sep.fiscal_year + ', ' + f.pct(sep.separation_rate) +
-            ' of records were marked ceased, which mixes quits, retirements, ' +
-            'layoffs and seasonal endings.'
+          ? '<span class="qual">In FY' + sep.fiscal_year + ', ' +
+            f.pct(sep.separation_rate) + ' of records were marked ceased, which ' +
+            'mixes quits, retirements, layoffs and seasonal endings.</span>'
           : '');
     } else {
       hBlock.hidden = true;

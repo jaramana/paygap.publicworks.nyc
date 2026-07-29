@@ -156,7 +156,8 @@
     { href: 'lookup.html',   nav: 'Look up' },
     { href: 'compare.html',  nav: 'Compare' },
     { href: 'citywide.html', nav: 'Citywide' },
-    { href: 'data.html',     nav: 'Data' }
+    { href: 'data.html',     nav: 'Data' },
+    { href: 'about.html',    nav: 'About' }
   ];
 
   function buildChrome() {
@@ -201,12 +202,14 @@
             '<li><a href="https://www.ssa.gov/oact/babynames/">SSA baby names</a></li>' +
           '</ul></div>' +
           '<div><h4>Project</h4><ul>' +
+            '<li><a href="about.html">About this site</a></li>' +
             '<li><a href="https://github.com/jaramana/thepaygap.nyc">Source on GitHub</a></li>' +
             '<li><a href="https://github.com/jaramana/thepaygap.nyc/issues">Report an error</a></li>' +
           '</ul></div>' +
         '</div>' +
-        '<p class="colophon">Public data, public method. Built with R, ' +
-          'no tracking, no accounts, ' +
+        '<p class="colophon">Built by Allen Shaibani · ' +
+          '<a href="https://github.com/jaramana/thepaygap.nyc">source on GitHub</a><br>' +
+          'Public data, public method. No tracking, no accounts, ' +
           '<span class="wink" title="Fiscal years run July to June, which is the single most common way to get these numbers wrong.">' +
           'and strong opinions about fiscal years</span>. ' +
           'Not affiliated with the City of New York.</p>' +

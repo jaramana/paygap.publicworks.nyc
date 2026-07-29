@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — thepaygap.nyc</title>
+<meta name="description" content="What this site is, why it exists, and a short history of the civil service title and the law that made the New York City payroll public.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap console">
+    <h1 class="console-h1">About</h1>
+    <p class="console-sub">
+      thepaygap.nyc is a lookup tool for the City of New York payroll. Search a
+      civil service title or an agency and it reports what the job pays, how
+      much of that comes from overtime, how long people stay, and whether the
+      pay has kept pace with New York prices and rent since 2014.
+    </p>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap prose">
+    <h2>Why it exists</h2>
+    <p>
+      The City publishes its entire payroll: every title, agency, base salary
+      and overtime dollar, going back to fiscal year 2014. It is a remarkable
+      piece of municipal transparency, and it goes largely unused, because a
+      6.8 million row file is not an answer to a question.
+    </p>
+    <p>
+      This site does the joining, deflating and aggregating once so that
+      looking something up takes a few seconds instead of an afternoon. It is
+      built for anyone with a question about what the City pays: the people
+      doing the jobs, the people managing them, reporters, researchers, or
+      someone deciding whether to apply.
+    </p>
+    <p>
+      There is no name search and no individual lookup. The payroll does
+      contain names, but the useful questions here are about titles and
+      agencies, and building a way to look up a named person's salary would
+      add little worth knowing.
+    </p>
+
+    <h2>A short history</h2>
+    <h3>The civil service title</h3>
+    <p>
+      A title is not a job description. It is a legal category, and knowing
+      that explains most of what looks strange in the data.
+    </p>
+    <p>
+      Before the 1880s, government jobs in New York were handed out through
+      patronage. The reaction against that produced the
+      <a href="https://www.archives.gov/milestone-documents/pendleton-act">Pendleton
+      Civil Service Reform Act</a>, signed 16 January 1883, which made
+      competitive examination the basis for federal hiring. It was drafted
+      largely by the New York Civil Service Reform Association and sponsored by
+      Senator George H. Pendleton of Ohio. New York State followed the same
+      year, the first state to adopt a merit system, on a bill sponsored in the
+      Assembly by Theodore Roosevelt.
+    </p>
+    <p>
+      The surviving principle is that a public job belongs to the public rather
+      than to whoever is in office, and that you make that true by defining the
+      job in advance, testing for it, and paying it on a published schedule.
+      That is what a title is: a defined class of work with an examination
+      attached and a negotiated rate, administered now by the
+      <a href="https://www.nyc.gov/site/dcas/employment/more-about-civil-service.page">Department
+      of Citywide Administrative Services</a>, which runs more than 180 exams a
+      year for over 110,000 candidates.
+    </p>
+    <p>
+      It is also why the payroll holds well over a thousand distinct titles,
+      many oddly specific, some holding three people, some named for work that
+      changed decades ago. Titles accumulate: creating one takes classification
+      work and negotiation, and retiring one strands the people in it. Because
+      the title carries the rate, most pay questions in City government are
+      really questions about a title, which is why this site is organised
+      around them.
+    </p>
+
+    <h3>How the payroll became public</h3>
+    <p>
+      The City Council passed the Open Data Law on 29 February 2012 and Mayor
+      Bloomberg signed it as
+      <a href="https://opendata.cityofnewyork.us/open-data-law/">Local Law 11 of
+      2012</a> on 7 March. It required every agency to publish its public data
+      sets on a single portal by the end of 2018, building on access rights
+      already established by the State Freedom of Information Law of 1974.
+      Amendments in 2015, 2016 and 2017 tightened it further.
+    </p>
+    <p>
+      Citywide Payroll Data appeared on that portal covering fiscal year 2014
+      onward. The law is the achievement here. The analysis is the easy part.
+    </p>
+
+    <h2>Who made it</h2>
+    <p>
+      Built by Allen Shaibani. The code and the analysis are public at
+      <a href="https://github.com/jaramana/thepaygap.nyc">github.com/jaramana/thepaygap.nyc</a>,
+      released under a BSD 3-Clause licence.
+    </p>
+    <p>
+      Not affiliated with the City of New York. If you find an error,
+      <a href="https://github.com/jaramana/thepaygap.nyc/issues">open an
+      issue</a>. Corrections are the point.
+    </p>
+
+    <h2>Before you cite anything</h2>
+    <p>
+      Read <a href="method.html">method and limits</a>. It sets out how the
+      figures are built, and, more usefully, the things this data cannot tell
+      you: gender is inferred from first names rather than recorded, tenure
+      counts time at the current agency rather than in public service, and
+      nothing here says whether any of the pay is fair.
+    </p>
+    <p>
+      All the underlying tables are on the <a href="data.html">data page</a> as
+      plain CSV, free to reuse with attribution.
+    </p>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

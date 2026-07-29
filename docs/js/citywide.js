@@ -55,7 +55,9 @@
       'All three indexed to 100 in FY' + m.index_year + '. By FY' + m.latest_year +
       ' pay stands at <strong>' + last.wage_index.toFixed(1) + '</strong>, rent at <strong>' +
       last.rent_index.toFixed(1) + '</strong> and prices at <strong>' +
-      last.cpi_index.toFixed(1) + '</strong>.';
+      last.cpi_index.toFixed(1) + '</strong>.' +
+      '<span class="qual">A median moves with who the City hires, not only with ' +
+      'what it pays. Look up a title to follow one job over time.</span>';
 
     var zori = wages.filter(function (x) { return x.zori != null; })
       .map(function (x) {
@@ -75,9 +77,10 @@
       document.getElementById('cw-rent-cap').innerHTML =
         'Typical asking rent rose ' + f.dollars(z0.zori) + ' → ' + f.dollars(z1.zori) +
         ' between FY' + z0.fiscal_year + ' and FY' + z1.fiscal_year + ', a rise of ' +
-        f.delta(z1.zori / z0.zori - 1) + '. Monthly pay is annual base divided by ' +
-        'twelve, before tax and before pension and health contributions, so ' +
-        'take-home is meaningfully below the blue line.';
+        f.delta(z1.zori / z0.zori - 1) + '.' +
+        '<span class="qual">Monthly pay is annual base divided by twelve, before ' +
+        'tax and before pension and health contributions, so take-home is ' +
+        'meaningfully below the blue line.</span>';
     }
 
     // ---- Gender --------------------------------------------------
@@ -113,7 +116,9 @@
       'men and women. Of the ' + f.pct(dec.total_gap) + ' gap, <strong>' +
       f.points(dec.between_gap) + ' points</strong> comes from how men and women are ' +
       'distributed across titles and <strong>' + f.points(dec.within_gap) +
-      ' points</strong> from pay differences inside the same title.';
+      ' points</strong> from pay differences inside the same title.' +
+      '<span class="qual">Gender is inferred from first names, so these are ' +
+      'population estimates and say nothing about any individual.</span>';
 
     PGCharts.lineChart('#g-trend', d.decomposition, {
       series: [
@@ -131,7 +136,8 @@
       ' to ' + f.pct(dec.total_gap) + ' in FY' + dec.fiscal_year + ', almost entirely ' +
       'through the between-title component shrinking. The within-title component moved ' +
       'the other way, ' + f.pct(d0.within_gap) + ' → ' + f.pct(dec.within_gap) +
-      '. Name matching covered ' + f.pct(cov.coverage, 0) + ' of employees.';
+      '.' + '<span class="qual">Name matching covered ' + f.pct(cov.coverage, 0) +
+      ' of employees.</span>';
 
     // ---- Name origin ---------------------------------------------
     PGCharts.lineChart('#n-chart', d.name_origin, {
@@ -147,8 +153,10 @@
     document.getElementById('n-cap').innerHTML =
       'FY' + n1.fiscal_year + ': a gap of <strong>' + f.pct(n1.gap) + '</strong>, or ' +
       f.dollars(n1.gap_dollars) + ' a year, affecting ' + f.pct(n1.uncommon_share, 0) +
-      ' of employees. Larger than the gender gap on the same payroll. A name counts ' +
-      'as present if it appears at least 25 times in SSA records since 1880.';
+      ' of employees, and larger than the gender gap on the same payroll.' +
+      '<span class="qual">A name counts as present if it appears at least 25 times ' +
+      'in SSA records since 1880. This is a proxy for national origin, not a ' +
+      'neutral category.</span>';
 
     // ---- Hourly ---------------------------------------------------
     var h = d.hourly, hl = h[h.length - 1], hf = h[0];
@@ -176,8 +184,9 @@
       ' between FY' + hf.fiscal_year + ' and FY' + hl.fiscal_year + '. In FY' +
       m.base_year + ' money that is ' + f.rate(hf.real_median_rate) + ' → ' +
       f.rate(hl.real_median_rate) + ', a real change of <strong>' +
-      f.delta(hl.real_median_rate / hf.real_median_rate - 1) + '</strong>. Rising New ' +
-      'York State minimum wage explains much of the movement at the bottom.';
+      f.delta(hl.real_median_rate / hf.real_median_rate - 1) + '</strong>.' +
+      '<span class="qual">Rising New York State minimum wage explains much of the ' +
+      'movement at the bottom of this distribution.</span>';
 
     PGTable.render('#h-table', {
       rows: hourlyTitles, sortKey: 'n', sortDir: 'desc', limit: 20,
@@ -218,8 +227,8 @@
     var y0 = years[0], y1 = years[years.length - 1];
     document.getElementById('w-head-cap').innerHTML =
       'Active records ' + f.num(y0.n) + ' → ' + f.num(y1.n) + ' between FY' +
-      y0.fiscal_year + ' and FY' + y1.fiscal_year + '. The hourly line tracks the ' +
-      'election calendar as much as hiring, because poll workers appear on the ' +
-      'payroll in years with large elections.';
+      y0.fiscal_year + ' and FY' + y1.fiscal_year + '.' +
+      '<span class="qual">The hourly line tracks the election calendar as much as ' +
+      'hiring, because poll workers appear on the payroll in election years.</span>';
   }).catch(function (e) { PG.fail(document.getElementById('cw-stats'), e); });
 })();

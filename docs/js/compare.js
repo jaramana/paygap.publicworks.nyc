@@ -110,9 +110,9 @@
         });
         var top = rows[0];
         document.getElementById('c-cap').innerHTML =
-          'Top 12 of <strong>' + f.num(rows.length) + '</strong> ' + state.scope +
-          's with at least ' + f.num(state.minN) + ' people. ' + top.name +
-          ' leads at <strong>' + fmtFn(top[m.sort]) + '</strong>.';
+          top.name + ' leads at <strong>' + fmtFn(top[m.sort]) + '</strong>.' +
+          '<span class="qual">Top 12 of ' + f.num(rows.length) + ' ' + state.scope +
+          's with at least ' + f.num(state.minN) + ' people.</span>';
       }
 
       // ---- Table ---------------------------------------------------

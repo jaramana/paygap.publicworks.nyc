@@ -151,6 +151,13 @@ a:hover { color: var(--accent-ink); }
 
 .wrap { width: min(100% - 2.5rem, var(--wide)); margin-inline: auto; }
 .prose { max-width: var(--measure); }
+
+/* .prose on the same element as .wrap would shrink the wrap to the reading
+   measure, and the wrap's auto margins would then centre the whole column
+   away from the page's left edge. Keep the wrap full width and constrain
+   its children instead. */
+.wrap.prose { max-width: none; }
+.wrap.prose > * { max-width: var(--measure); }
 main { padding-bottom: 5rem; }
 
 /* ---- Masthead --------------------------------------------------- */
@@ -245,11 +252,12 @@ main { padding-bottom: 5rem; }
 }
 .scope-tabs button:hover[aria-selected="false"] { color: var(--ink); border-color: var(--rule-strong); }
 
+/* Sans, not mono: you type into this, and a monospace field reads as a
+   command line. Mono is for readouts, not for input. */
 .search-row input[type="search"] {
   width: 100%; max-width: none;
   font-size: 1.05rem; padding: .7rem .9rem;
   border: 1.5px solid var(--rule-strong); border-radius: 9px;
-  font-family: var(--mono);
 }
 .search-row input[type="search"]:focus {
   border-color: var(--accent);
@@ -285,42 +293,64 @@ main { padding-bottom: 5rem; }
   font-size: clamp(1.6rem, 3.4vw, 2.4rem); margin-bottom: .3rem;
 }
 
-/* ---- Query cards ------------------------------------------------- */
+/* ---- Result cards ------------------------------------------------ */
+/* A result, not a query. Scope tag, what it is about, the number, then
+   what the number means. No syntax: there is no query language here, and
+   implying one would send a technical reader looking for a box that does
+   not exist. */
 
 .query-grid {
   list-style: none; padding: 0; margin: 0 0 1rem;
   display: grid; gap: .75rem;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
 }
-.query-card {
-  display: flex; flex-direction: column; gap: .3rem; height: 100%;
-  padding: .9rem 1rem; text-decoration: none; color: inherit;
+.result-card {
+  display: flex; flex-direction: column; gap: .28rem; height: 100%;
+  padding: .95rem 1.1rem; text-decoration: none; color: inherit;
   background: var(--paper-raised);
   border: 1px solid var(--rule); border-left: 3px solid var(--rule-strong);
   border-radius: 0 8px 8px 0;
   transition: border-left-color .12s ease, background .12s ease;
 }
-.query-card:hover { border-left-color: var(--accent); background: var(--paper-sunken); }
-.query-card .q {
-  font-size: .78rem; color: var(--ink-faint);
-  overflow-wrap: anywhere;
+.result-card:hover { border-left-color: var(--accent); background: var(--paper-sunken); }
+.result-card .tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-faint);
 }
-.query-card .a {
-  font-size: 1.45rem; font-weight: 700; letter-spacing: -.025em;
-  line-height: 1.1; color: var(--ink);
+/* Titles and agencies are set as the payroll writes them, in caps. That is
+   the record's own spelling, not styling. */
+.result-card .entity {
+  font-size: .88rem; font-weight: 600; color: var(--ink);
+  line-height: 1.3; overflow-wrap: anywhere;
 }
-.query-card .n { font-size: .84rem; color: var(--ink-soft); line-height: 1.4; }
-.query-card.small .a { font-size: 1rem; letter-spacing: -.01em; }
+.result-card .value {
+  font-size: 1.75rem; font-weight: 700; letter-spacing: -.03em;
+  line-height: 1.05; color: var(--ink); margin-top: .1rem;
+}
+.result-card .meaning {
+  font-size: .86rem; color: var(--ink-soft); line-height: 1.4;
+}
+.result-card.small .entity { font-size: 1rem; }
+.result-card.small .meaning { font-size: .84rem; }
 
 /* ---- Stat tiles ------------------------------------------------- */
 
+/* Hairlines come from a box-shadow on each tile rather than a 1px grid gap
+   over a coloured container. The gap trick leaves a bare rectangle of
+   container colour wherever the last row is short of a full set, which
+   happens at any width where the tile count does not divide evenly.
+   box-shadow takes no space and is clipped at the rounded corner. */
 .stats {
-  display: grid; gap: 1px; background: var(--rule);
+  display: grid; gap: 0;
+  background: var(--paper-raised);
   border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   margin: 2rem 0;
 }
-.stat { background: var(--paper-raised); padding: 1.1rem 1.2rem; }
+.stat {
+  padding: 1.1rem 1.2rem;
+  box-shadow: 1px 0 0 var(--rule), 0 1px 0 var(--rule);
+}
 .stat dt {
   font-size: .78rem; color: var(--ink-faint); font-weight: 600;
   letter-spacing: .01em; margin-bottom: .3rem;
@@ -344,9 +374,19 @@ main { padding-bottom: 5rem; }
 }
 
 figure { margin: 2rem 0; }
+
+/* The caption under a chart is usually the actual finding, so it is set at
+   reading size in body ink rather than as a footnote. The qualifying half
+   (what the number cannot tell you) drops to footnote treatment inside
+   .qual, which keeps the result and its caveat visibly different things. */
 figcaption {
+  font-size: 1rem; line-height: 1.5; color: var(--ink-soft);
+  margin-top: .85rem; max-width: 46rem;
+}
+figcaption strong { color: var(--ink); font-weight: 700; }
+figcaption .qual {
+  display: block; margin-top: .45rem;
   font-size: .85rem; color: var(--ink-faint);
-  margin-top: .75rem; max-width: var(--measure);
 }
 
 .chart { width: 100%; overflow-x: auto; }
