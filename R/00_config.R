@@ -33,7 +33,11 @@ INDEX_YEAR <- 2014      # index charts are set to 100 in this year
 # show a 44% "gender gap" that is one person's salary, not a pattern.
 
 MIN_GROUP_N <- 30   # below this, a figure is suppressed rather than published
-CHART_MIN_N <- 200  # below this, a group is excluded from ranked charts
+# Floor for the ranking files the site loads. Set to the suppression floor so
+# every reportable group is exported and nothing is invisible just because it
+# is small. Which groups a ranking actually *shows* is a display choice made
+# in the browser, where the minimum is a control the reader can move.
+CHART_MIN_N <- MIN_GROUP_N
 
 
 # ---- Gender proxy ------------------------------------------------------

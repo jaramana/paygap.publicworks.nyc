@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compare — thepaygap.nyc</title>
+<meta name="description" content="Rank every City of New York title or agency by pay, real-terms change, overtime, compression, gender gap, tenure or churn.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/compare.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap console">
+    <h1 class="console-h1">Compare</h1>
+    <p class="console-sub">
+      Rank every title or agency by one measure. The minimum group size is a
+      control, not a fixed rule: raise it for stabler rankings, lower it to see
+      smaller groups.
+    </p>
+
+    <div class="controls" id="controls">
+      <div class="control">
+        <label for="c-metric">Measure</label>
+        <select id="c-metric"></select>
+      </div>
+      <div class="control">
+        <label for="c-scope">Group by</label>
+        <select id="c-scope"></select>
+      </div>
+      <div class="control">
+        <label for="c-minn">Minimum people</label>
+        <select id="c-minn">
+          <option value="30">30 (all reportable)</option>
+          <option value="50">50</option>
+          <option value="100" selected>100</option>
+          <option value="200">200</option>
+          <option value="500">500</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="c-dir">Order</label>
+        <select id="c-dir">
+          <option value="desc">Highest first</option>
+          <option value="asc">Lowest first</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="hint" id="c-blurb"></p>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap">
+    <figure>
+      <div id="c-chart" class="chart"></div>
+      <figcaption id="c-cap"></figcaption>
+    </figure>
+
+    <h2 class="section-label">Full ranking</h2>
+    <div id="c-table"></div>
+
+    <div class="note-box" id="c-note"></div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

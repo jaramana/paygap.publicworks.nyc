@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Look up — thepaygap.nyc</title>
+<meta name="description" content="Look up any City of New York civil service title or agency: pay range, overtime, tenure, compression and real-terms change since 2014.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/lookup.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap console">
+    <div class="search-shell" id="lookup-search"></div>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap" id="entity" hidden>
+    <div class="entity-head">
+      <p class="kind mono" id="e-kind"></p>
+      <h1 id="e-name"></h1>
+      <p class="mono statusline" id="e-sub"></p>
+    </div>
+
+    <dl class="stats" id="e-stats"></dl>
+
+    <h2 class="section-label">Pay range over time</h2>
+    <figure>
+      <div id="e-range" class="chart"></div>
+      <figcaption id="e-range-cap"></figcaption>
+    </figure>
+
+    <h2 class="section-label">Against prices and rent</h2>
+    <figure>
+      <div id="e-index" class="chart"></div>
+      <figcaption id="e-index-cap"></figcaption>
+    </figure>
+
+    <div id="e-ot-block">
+      <h2 class="section-label">Overtime</h2>
+      <figure>
+        <div id="e-ot" class="chart"></div>
+        <figcaption id="e-ot-cap"></figcaption>
+      </figure>
+    </div>
+
+    <div id="e-comp-block">
+      <h2 class="section-label">New hires against veterans</h2>
+      <figure>
+        <div id="e-comp" class="chart"></div>
+        <figcaption id="e-comp-cap"></figcaption>
+      </figure>
+    </div>
+
+    <div id="e-tenure-block">
+      <h2 class="section-label">Tenure</h2>
+      <figure>
+        <div id="e-tenure" class="chart"></div>
+        <figcaption id="e-tenure-cap"></figcaption>
+      </figure>
+    </div>
+
+    <div id="e-head-block">
+      <h2 class="section-label">Headcount</h2>
+      <figure>
+        <div id="e-head" class="chart"></div>
+        <figcaption id="e-head-cap"></figcaption>
+      </figure>
+    </div>
+
+    <h2 class="section-label" id="e-break-label"></h2>
+    <div id="e-breakdown"></div>
+
+    <div class="note-box">
+      <p>
+        <strong>Base salary is not take-home.</strong> These are annual base
+        rates as recorded by the City. They exclude overtime, differentials and
+        other pay, and they are before tax, pension and health contributions.
+        Where overtime is a meaningful share, the overtime panel shows it.
+        <a href="method.html">Method and limits</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap" id="browse">
+    <h2 class="section-label">All titles</h2>
+    <div id="browse-table"></div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

@@ -53,6 +53,29 @@
     }
   };
 
+  // Named formatters, so metrics.json can say fmt:"dollars" and the browser
+  // resolves it here. Adding a metric in R needs no change in the browser as
+  // long as it reuses one of these names.
+  var FORMATTERS = {
+    num:            function (v) { return fmt.num(v); },
+    year:           function (v) { return v === null || v === undefined ? '—' : 'FY' + v; },
+    dollars:        function (v) { return fmt.dollars(v); },
+    dollars_signed: function (v) {
+      if (v === null || v === undefined || isNaN(v)) return '—';
+      return (v >= 0 ? '+' : '−') + fmt.dollars(Math.abs(v));
+    },
+    rate:           function (v) { return fmt.rate(v); },
+    pct:            function (v) { return fmt.pct(v); },
+    pct0:           function (v) { return fmt.pct(v, 0); },
+    delta:          function (v) { return fmt.delta(v); },
+    ratio:          function (v) {
+      return v === null || v === undefined || isNaN(v) ? '—' : v.toFixed(3);
+    },
+    years:          function (v) { return fmt.years(v); }
+  };
+
+  function formatter(name) { return FORMATTERS[name] || function (v) { return v; }; }
+
   // ---- Data -------------------------------------------------------
 
   var cache = {};
@@ -130,15 +153,10 @@
   // JSON anyway, so nothing is lost by building the chrome the same way.
 
   var PAGES = [
-    { href: 'wages.html',       nav: 'Pay vs rent' },
-    { href: 'titles.html',      nav: 'Your title' },
-    { href: 'overtime.html',    nav: 'Overtime' },
-    { href: 'compression.html', nav: 'Compression' },
-    { href: 'gender.html',      nav: 'Gender' },
-    { href: 'hourly.html',      nav: 'Hourly' },
-    { href: 'workforce.html',   nav: 'Workforce' },
-    { href: 'about.html',       nav: 'About' },
-    { href: 'downloads.html',   nav: 'Data' }
+    { href: 'lookup.html',   nav: 'Look up' },
+    { href: 'compare.html',  nav: 'Compare' },
+    { href: 'citywide.html', nav: 'Citywide' },
+    { href: 'data.html',     nav: 'Data' }
   ];
 
   function buildChrome() {
@@ -165,17 +183,16 @@
       foot.className = 'footer';
       foot.innerHTML =
         '<div class="wrap"><div class="footer-grid">' +
-          '<div><h4>Sections</h4><ul>' +
-            '<li><a href="wages.html">Pay vs rent</a></li>' +
-            '<li><a href="titles.html">Find your title</a></li>' +
-            '<li><a href="gender.html">Gender gap</a></li>' +
-            '<li><a href="overtime.html">Overtime</a></li>' +
+          '<div><h4>Views</h4><ul>' +
+            '<li><a href="lookup.html">Look up a title</a></li>' +
+            '<li><a href="lookup.html?scope=agency">Look up an agency</a></li>' +
+            '<li><a href="compare.html">Compare</a></li>' +
+            '<li><a href="citywide.html">Citywide</a></li>' +
           '</ul></div>' +
-          '<div><h4>More</h4><ul>' +
-            '<li><a href="compression.html">Compression</a></li>' +
-            '<li><a href="hourly.html">Hourly workers</a></li>' +
-            '<li><a href="workforce.html">Workforce</a></li>' +
-            '<li><a href="downloads.html">Download the data</a></li>' +
+          '<div><h4>Reference</h4><ul>' +
+            '<li><a href="data.html">Download the data</a></li>' +
+            '<li><a href="method.html">Method and limits</a></li>' +
+            '<li><a href="data.html#dictionary">Data dictionary</a></li>' +
           '</ul></div>' +
           '<div><h4>Sources</h4><ul>' +
             '<li><a href="https://data.cityofnewyork.us/d/k397-673e">NYC Citywide Payroll</a></li>' +
@@ -184,13 +201,14 @@
             '<li><a href="https://www.ssa.gov/oact/babynames/">SSA baby names</a></li>' +
           '</ul></div>' +
           '<div><h4>Project</h4><ul>' +
-            '<li><a href="about.html">About and method</a></li>' +
             '<li><a href="https://github.com/jaramana/thepaygap.nyc">Source on GitHub</a></li>' +
+            '<li><a href="https://github.com/jaramana/thepaygap.nyc/issues">Report an error</a></li>' +
           '</ul></div>' +
         '</div>' +
-        '<p class="colophon">Public data, public method. Built with R and ' +
-          '<span class="wink" title="A civil servant, a spreadsheet, and a strong opinion about fiscal years.">' +
-          'a certain amount of stubbornness</span>. ' +
+        '<p class="colophon">Public data, public method. Built with R, ' +
+          'no tracking, no accounts, ' +
+          '<span class="wink" title="Fiscal years run July to June, which is the single most common way to get these numbers wrong.">' +
+          'and strong opinions about fiscal years</span>. ' +
           'Not affiliated with the City of New York.</p>' +
         '</div>';
     }
@@ -217,8 +235,25 @@
     initTheme();
   });
 
+  // A status line, so the instrument reports what it is showing. Any element
+  // with data-status gets it.
+  function stampStatus() {
+    var nodes = document.querySelectorAll('[data-status]');
+    if (!nodes.length) return;
+    load('citywide.json').then(function (d) {
+      var m = d.meta;
+      var txt = 'FY' + m.years[0] + '–' + m.years[1] + ' · ' +
+        fmt.num(d.headline.headcount) + ' salaried · ' +
+        m.n_titles.toLocaleString('en-US') + ' titles · ' +
+        'FY' + m.base_year + ' dollars · built ' + m.generated;
+      nodes.forEach(function (n) { n.textContent = txt; });
+    }).catch(function () {});
+  }
+
+  document.addEventListener('DOMContentLoaded', stampStatus);
+
   window.PG = {
-    fmt: fmt, load: load, fail: fail,
+    fmt: fmt, load: load, fail: fail, formatter: formatter,
     param: param, setParam: setParam, el: el
   };
 })();

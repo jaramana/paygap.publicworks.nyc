@@ -42,6 +42,21 @@
     count.className = 'count';
     tools.appendChild(count);
 
+    // Long tables are truncated by default so a page stays scannable, with
+    // the rest one click away rather than behind pagination.
+    var expanded = false;
+    var more = null;
+    if (cfg.limit) {
+      more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'pill';
+      more.addEventListener('click', function () {
+        expanded = !expanded;
+        draw();
+      });
+      tools.appendChild(more);
+    }
+
     if (cfg.csv) {
       var dl = document.createElement('a');
       dl.className = 'pill';
@@ -135,7 +150,8 @@
       });
 
       tbody.innerHTML = '';
-      var limit = cfg.limit || data.length;
+      // A filter that narrows the set below the cap makes truncation moot.
+      var limit = (!cfg.limit || expanded) ? data.length : cfg.limit;
       data.slice(0, limit).forEach(function (r) {
         var tr = document.createElement('tr');
         columns.forEach(function (c) {
@@ -160,9 +176,21 @@
       });
 
       var shown = Math.min(limit, data.length);
-      count.textContent = shown === rows.length
-        ? rows.length.toLocaleString('en-US') + ' rows'
-        : shown.toLocaleString('en-US') + ' of ' + rows.length.toLocaleString('en-US');
+      count.textContent = shown === data.length
+        ? data.length.toLocaleString('en-US') + ' rows'
+        : shown.toLocaleString('en-US') + ' of ' + data.length.toLocaleString('en-US');
+
+      if (more) {
+        var hidden = data.length - shown;
+        if (hidden > 0 || expanded) {
+          more.hidden = false;
+          more.textContent = expanded
+            ? 'Show first ' + cfg.limit
+            : 'Show all ' + data.length.toLocaleString('en-US');
+        } else {
+          more.hidden = true;
+        }
+      }
     }
 
     draw();

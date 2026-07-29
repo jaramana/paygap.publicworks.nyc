@@ -33,14 +33,19 @@ analysis <- list(
   wages_by_title      = real_wage_series(payroll, prices, "title"),
   wages_by_agency     = real_wage_series(payroll, prices, "agency"),
 
-  title_profiles      = title_profiles(payroll),
+  title_profiles      = group_profiles(payroll, "title"),
+  agency_profiles     = group_profiles(payroll, "agency"),
+  # Title x agency pairs. Filtered by title it answers "who employs this
+  # job"; filtered by agency, "what jobs does this agency have".
   title_by_agency     = title_by_agency(payroll),
 
   overtime_by_title   = overtime_dependence(payroll, "title"),
   overtime_by_agency  = overtime_dependence(payroll, "agency"),
 
-  compression         = salary_compression(payroll),
-  tenure_by_title     = tenure_distribution(payroll),
+  compression         = salary_compression(payroll, "title"),
+  compression_agency  = salary_compression(payroll, "agency"),
+  tenure_by_title     = tenure_distribution(payroll, group_col = "title"),
+  tenure_by_agency    = tenure_distribution(payroll, group_col = "agency"),
 
   hourly_by_title     = hourly_workers(payroll, prices),
   hourly_summary      = hourly_summary(payroll, prices),
@@ -58,7 +63,8 @@ analysis <- list(
   headcount_agency    = headcount(payroll, "agency"),
   headcount_title     = headcount(payroll, "title"),
   separations         = separations(payroll, "agency"),
-  retirement          = retirement_exposure(payroll)
+  retirement          = retirement_exposure(payroll, group_col = "title"),
+  retirement_agency   = retirement_exposure(payroll, group_col = "agency")
 )
 
 export_all(analysis, prep)

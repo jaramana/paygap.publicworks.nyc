@@ -3,131 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>thepaygap.nyc — tabulating the City of New York payroll</title>
-<meta name="description" content="What New York City pays its 288,000 employees, measured against inflation and rent. Open data, open method, fiscal years 2014 to 2025.">
+<title>thepaygap.nyc — look up City of New York pay</title>
+<meta name="description" content="A lookup tool for the New York City payroll. Search any civil service title or agency for pay, overtime, tenure and how it has tracked inflation and rent since 2014.">
 <link rel="stylesheet" href="css/site.css">
 <script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <script src="js/site.js" defer></script>
-<script src="js/charts.js" defer></script>
-<script src="js/index.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/home.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header data-chrome="masthead"></header>
 
 <main id="main">
-  <section class="wrap hero">
-    <p class="eyebrow">Fiscal years 2014 to 2025 · 288,000 employees</p>
-    <h1>City pay went up.<br>Rent went up more.</h1>
-    <p class="lede">
-      Since 2014 the median salary at the City of New York has risen 37.8%.
-      New York inflation over the same period was 31.5%, so pay is modestly
-      ahead of prices. Rent rose 38.8%. This site works out what that means
-      for each of the City's 1,500 civil service titles, and shows its work.
+  <section class="wrap console">
+    <h1 class="console-h1">City of New York payroll, made searchable</h1>
+    <p class="console-sub">
+      Public payroll records for every City job, turned into answers about pay,
+      overtime, tenure, and whether a given title has kept up with New York
+      prices and rent.
     </p>
+
+    <div class="search-shell" id="home-search"></div>
+
+    <p class="statusline mono" data-status>Loading…</p>
   </section>
 
   <section class="wrap">
-    <dl class="stats" id="headline-stats"></dl>
-
-    <figure>
-      <div id="hero-chart" class="chart"></div>
-      <figcaption id="hero-caption">
-        Median base salary for salaried City employees, against New York-area
-        consumer prices and rent. All three indexed to 100 in fiscal year 2014.
-      </figcaption>
-    </figure>
-
-    <div class="note-box">
-      <p>
-        <strong>Read this the right way.</strong> The pay line is the median
-        across everyone the City employed that year, not a raise. When the City
-        hires many people into lower-paid titles, the median falls even if
-        nobody's salary was cut. To follow an actual job over time, use
-        <a href="titles.html">your title</a>.
-      </p>
-    </div>
+    <h2 class="section-label">Start here</h2>
+    <p class="hint">Each of these is a saved query. Change the title or agency to ask it about something else.</p>
+    <ul class="query-grid" id="examples"></ul>
   </section>
 
   <section class="wrap">
-    <h2>What we found</h2>
-    <ul class="chapters">
-      <li>
-        <a href="wages.html">
-          <h3>Pay against rent</h3>
-          <p>Which titles kept up with New York, and which quietly lost ground.
-             Special Officers are down 20% in real terms since 2014.</p>
-        </a>
-      </li>
-      <li>
-        <a href="titles.html">
-          <h3>Find your title</h3>
-          <p>Salary range, headcount, overtime, tenure and real pay history for
-             every civil service title with enough people to report.</p>
-        </a>
-      </li>
-      <li>
-        <a href="gender.html">
-          <h3>The gender gap, taken apart</h3>
-          <p>The gap is 3.5%. Four fifths of it is not unequal pay for the same
-             job: it is women concentrated in lower-paid titles.</p>
-        </a>
-      </li>
-      <li>
-        <a href="overtime.html">
-          <h3>Who needs overtime</h3>
-          <p>Some titles reach a livable number only by working extra hours.
-             Deckhands and Correction Officers draw a third of pay from it.</p>
-        </a>
-      </li>
-      <li>
-        <a href="compression.html">
-          <h3>Experience stopped paying</h3>
-          <p>In some titles a new hire now earns as much as a colleague with
-             ten years in. First time this has been published for NYC.</p>
-        </a>
-      </li>
-      <li>
-        <a href="hourly.html">
-          <h3>The workers nobody counts</h3>
-          <p>Crossing guards, school aides, poll workers. Previous versions of
-             this site left all of them out.</p>
-        </a>
-      </li>
-      <li>
-        <a href="workforce.html">
-          <h3>The retirement cliff</h3>
-          <p>Nine in ten Battalion Chiefs are past twenty years of service.
-             Headcount, churn and tenure by agency and title.</p>
-        </a>
-      </li>
-      <li>
-        <a href="about.html">
-          <h3>How this works</h3>
-          <p>Where the numbers come from, what the method cannot see, and six
-             errors corrected from the 2020 version of this site.</p>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <section class="wrap">
-    <h2>Built for the people in the data</h2>
-    <div class="prose">
-      <p>
-        This started because working out one title's real pay history, by hand,
-        turned out to be genuinely useful in a room full of colleagues trying to
-        make a case. That is the whole idea here: the City publishes the payroll,
-        but publishing is not the same as making something usable.
-      </p>
-      <p>
-        Every figure can be traced. The <a href="downloads.html">data</a> is
-        downloadable as plain CSV with a data dictionary, the
-        <a href="https://github.com/jaramana/thepaygap.nyc">code</a> is public,
-        and where the method is weak the page says so next to the number rather
-        than in a footnote.
-      </p>
-    </div>
+    <h2 class="section-label">Or compare across the City</h2>
+    <ul class="query-grid compact" id="metric-links"></ul>
   </section>
 </main>
 

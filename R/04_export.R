@@ -105,6 +105,7 @@ export_titles <- function(a) {
     payload <- list(
       title = t,
       slug  = slugify(t),
+      kind  = "title",
       profile = round_cols(as.data.frame(
         profiles %>% filter(title == t) %>% select(-title))),
       wages = round_cols(as.data.frame(
@@ -135,6 +136,98 @@ export_titles <- function(a) {
 }
 
 
+# ---- Per-agency payloads -----------------------------------------------
+# Same shape as the title payloads, so one lookup view in the browser can
+# render either without knowing which it was handed. The only structural
+# difference is the breakdown: a title lists the agencies employing it, an
+# agency lists the titles it employs.
+
+export_agencies <- function(a) {
+  profiles <- a$agency_profiles
+  keep <- profiles %>% filter(!suppressed) %>% distinct(agency) %>% pull(agency)
+
+  # An agency lists every title it employs down to five people, but only
+  # titles clearing the reporting threshold get a page of their own. Flag
+  # which is which so the browser links the ones that exist and leaves the
+  # rest as plain text instead of offering a link to a 404.
+  titles_with_pages <- a$title_profiles %>%
+    filter(!suppressed) %>% distinct(title) %>% pull(title)
+
+  slugs <- slugify(keep)
+  if (anyDuplicated(slugs)) {
+    dup <- unique(slugs[duplicated(slugs)])
+    stop("Agency slug collision: ",
+         paste(vapply(dup, function(d) paste(keep[slugs == d], collapse = " / "),
+                      character(1)), collapse = "; "),
+         "\nAdd a rule to normalize_agency() in R/02_prepare.R.", call. = FALSE)
+  }
+
+  message(sprintf("Exporting %d agencies...", length(keep)))
+
+  idx <- profiles %>%
+    filter(agency %in% keep) %>%
+    group_by(agency) %>%
+    filter(fiscal_year == max(fiscal_year)) %>%
+    ungroup() %>%
+    transmute(slug = slugify(agency), agency,
+              n, median_salary, real_median, fiscal_year) %>%
+    arrange(desc(n))
+
+  write_json_file(round_cols(as.data.frame(idx)),
+                  file.path(PATH_SITE_DATA, "agencies-index.json"))
+
+  wages  <- a$wages_by_agency
+  ot     <- a$overtime_by_agency
+  comp   <- a$compression_agency
+  titles <- a$title_by_agency
+  tenure <- a$tenure_by_agency
+  heads  <- a$headcount_agency
+  seps   <- a$separations
+
+  dir.create(file.path(PATH_SITE_DATA, "agencies"), showWarnings = FALSE, recursive = TRUE)
+
+  for (g in keep) {
+    payload <- list(
+      title = g,                 # generic key so the browser can stay agnostic
+      slug  = slugify(g),
+      kind  = "agency",
+      profile = round_cols(as.data.frame(
+        profiles %>% filter(agency == g) %>% select(-agency))),
+      wages = round_cols(as.data.frame(
+        wages %>% filter(agency == g) %>%
+          select(fiscal_year, n, median_salary, real_median,
+                 wage_index, cpi_index, rent_index, zori))),
+      overtime = round_cols(as.data.frame(
+        ot %>% filter(agency == g) %>%
+          select(fiscal_year, n, median_base, median_total_comp,
+                 ot_share_of_pay, pct_with_ot))),
+      compression = round_cols(as.data.frame(
+        comp %>% filter(agency == g) %>%
+          select(fiscal_year, n_new, n_vet, median_new, median_vet,
+                 compression_ratio, experience_premium))),
+      # The counterpart breakdown: which titles this agency employs.
+      titles = round_cols(as.data.frame(
+        titles %>% filter(agency == g, !suppressed) %>%
+          transmute(slug = slugify(title), title, n, median_salary,
+                    has_page = title %in% titles_with_pages) %>%
+          arrange(desc(n)))),
+      tenure = as.data.frame(
+        tenure %>% filter(agency == g) %>% select(band, n, share)),
+      headcount = round_cols(as.data.frame(
+        heads %>% filter(agency == g) %>%
+          select(fiscal_year, n, n_salaried, n_hourly, n_daily))),
+      separations = round_cols(as.data.frame(
+        seps %>% filter(agency == g) %>%
+          select(fiscal_year, active, ceased, separation_rate)))
+    )
+    write_json_file(payload,
+                    file.path(PATH_SITE_DATA, "agencies", paste0(slugify(g), ".json")))
+  }
+
+  invisible(length(keep))
+}
+
+
 # ---- Citywide payload --------------------------------------------------
 
 export_citywide <- function(a, prep) {
@@ -152,6 +245,11 @@ export_citywide <- function(a, prep) {
       index_year   = INDEX_YEAR,
       latest_year  = latest,
       min_group_n  = MIN_GROUP_N,
+      # Distinct titles and agencies on the payroll in the latest year, for
+      # the status line. Counted before the reporting threshold, so this is
+      # the size of the source rather than the size of what is publishable.
+      n_titles     = n_distinct(a$title_profiles$title[a$title_profiles$fiscal_year == latest]),
+      n_agencies   = n_distinct(a$agency_profiles$agency[a$agency_profiles$fiscal_year == latest]),
       source       = sprintf("%s/d/%s", SOCRATA_HOST, SOCRATA_DATASET),
       cpi_series   = CPI_SERIES,
       rent_series  = RENT_SERIES
@@ -199,78 +297,210 @@ export_citywide <- function(a, prep) {
 # Each site chapter opens with a ranked table. These are pre-cut to the
 # latest year and the CHART_MIN_N floor so the page does not ship 1,500 rows
 # to render 25.
+# Rankings are emitted as one file per metric per scope, all in the same
+# shape: slug, name, n, then the metric columns. Alongside them goes
+# metrics.json, a manifest describing what exists and how to format it, so
+# the comparison view in the browser is driven by this file rather than by a
+# hardcoded list that would drift every time a metric is added here.
+
+rank_file <- function(df, entity_col, cols) {
+  if (is.null(df) || !nrow(df)) return(NULL)
+  # Not every frame carries every requested column (agency-level overtime has
+  # no median_ot_hours, for one), so take the intersection rather than error.
+  have <- intersect(cols, names(df))
+  df %>%
+    transmute(slug = slugify(.data[[entity_col]]),
+              name = .data[[entity_col]],
+              across(all_of(have))) %>%
+    as.data.frame() %>%
+    round_cols()
+}
+
 export_rankings <- function(a) {
   latest <- max(YEARS)
 
-  overtime <- a$overtime_by_title %>%
-    filter(fiscal_year == latest, !suppressed, n >= CHART_MIN_N) %>%
-    arrange(desc(ot_share_of_pay)) %>%
-    transmute(slug = slugify(title), title, n, median_base, median_total_comp,
-              ot_share_of_pay, pct_with_ot, median_ot_hours)
-
-  compression <- a$compression %>%
-    filter(fiscal_year == latest, !suppressed) %>%
-    arrange(desc(compression_ratio)) %>%
-    transmute(slug = slugify(title), title, n_new, n_vet, median_new,
-              median_vet, compression_ratio, experience_premium)
-
-  gender_title <- a$gender_by_title %>%
-    filter(fiscal_year == latest, !suppressed, n >= CHART_MIN_N) %>%
-    arrange(desc(gap)) %>%
-    transmute(slug = slugify(title), title, n, male_mean, female_mean,
-              gap, gap_dollars, female_share)
-
-  gender_agency <- a$gender_by_agency %>%
-    filter(fiscal_year == latest, !suppressed, n >= CHART_MIN_N) %>%
-    arrange(desc(gap)) %>%
-    transmute(agency, n, male_mean, female_mean, gap, gap_dollars, female_share)
-
-  # Real-terms winners and losers: whose pay outran inflation and whose did not.
-  wage_change <- a$wages_by_title %>%
-    filter(!suppressed) %>%
-    group_by(title) %>%
-    filter(n() >= 2) %>%
-    summarise(
-      first_year = min(fiscal_year), last_year = max(fiscal_year),
-      n = last(n),
-      first_real = first(real_median), last_real = last(real_median),
-      first_nominal = first(median_salary), last_nominal = last(median_salary),
-      .groups = "drop"
-    ) %>%
-    filter(last_year == latest, n >= CHART_MIN_N) %>%
-    mutate(
-      real_change    = last_real / first_real - 1,
-      nominal_change = last_nominal / first_nominal - 1,
-      slug = slugify(title)
-    ) %>%
-    arrange(real_change)
-
-  retirement <- a$retirement %>%
-    filter(!suppressed, n >= CHART_MIN_N) %>%
-    arrange(desc(pct_over_20)) %>%
-    transmute(slug = slugify(title), title, n, median_tenure,
-              pct_over_20, pct_over_25, pct_under_5)
-
-  separations <- a$separations %>%
-    filter(fiscal_year == latest, !suppressed) %>%
-    arrange(desc(separation_rate)) %>%
-    select(agency, active, ceased, separation_rate)
-
-  hourly_titles <- a$hourly_by_title %>%
-    filter(fiscal_year == latest, !suppressed) %>%
-    arrange(desc(n)) %>%
-    transmute(pay_basis, title, n, median_rate, real_median_rate,
-              median_hours, median_gross, pct_substantial)
-
-  headcount <- a$headcount_agency %>%
-    transmute(agency, fiscal_year, n, n_salaried, n_hourly, n_daily)
-
-  for (nm in c("overtime", "compression", "gender_title", "gender_agency",
-               "wage_change", "retirement", "separations", "hourly_titles",
-               "headcount")) {
-    write_json_file(round_cols(as.data.frame(get(nm))),
-                    file.path(PATH_SITE_DATA, paste0(gsub("_", "-", nm), ".json")))
+  # Real-terms change needs deriving from the wage series; everything else is
+  # a straight filter of an existing analysis frame.
+  wage_change <- function(df, entity_col) {
+    df %>%
+      filter(!suppressed) %>%
+      group_by(across(all_of(entity_col))) %>%
+      filter(n() >= 2) %>%
+      summarise(
+        first_year = min(fiscal_year), last_year = max(fiscal_year),
+        n = dplyr::last(n),
+        first_real = dplyr::first(real_median), last_real = dplyr::last(real_median),
+        first_nominal = dplyr::first(median_salary),
+        last_nominal = dplyr::last(median_salary),
+        .groups = "drop"
+      ) %>%
+      filter(last_year == latest, n >= CHART_MIN_N) %>%
+      mutate(real_change    = last_real / first_real - 1,
+             nominal_change = last_nominal / first_nominal - 1)
   }
+
+  latest_ok <- function(df) filter(df, fiscal_year == latest, !suppressed, n >= CHART_MIN_N)
+
+  sets <- list(
+    list(id = "pay", scope = "title", data = latest_ok(a$title_profiles), col = "title",
+         cols = c("n", "median_salary", "mean_salary", "p10", "p90", "real_median")),
+    list(id = "pay", scope = "agency", data = latest_ok(a$agency_profiles), col = "agency",
+         cols = c("n", "median_salary", "mean_salary", "p10", "p90", "real_median")),
+
+    list(id = "real-change", scope = "title", data = wage_change(a$wages_by_title, "title"),
+         col = "title",
+         cols = c("n", "first_year", "first_nominal", "last_nominal",
+                  "nominal_change", "real_change")),
+    list(id = "real-change", scope = "agency", data = wage_change(a$wages_by_agency, "agency"),
+         col = "agency",
+         cols = c("n", "first_year", "first_nominal", "last_nominal",
+                  "nominal_change", "real_change")),
+
+    list(id = "overtime", scope = "title", data = latest_ok(a$overtime_by_title), col = "title",
+         cols = c("n", "median_base", "median_total_comp", "ot_share_of_pay",
+                  "pct_with_ot", "median_ot_hours")),
+    list(id = "overtime", scope = "agency", data = latest_ok(a$overtime_by_agency), col = "agency",
+         cols = c("n", "median_base", "median_total_comp", "ot_share_of_pay",
+                  "pct_with_ot", "median_ot_hours")),
+
+    list(id = "compression", scope = "title",
+         data = filter(a$compression, fiscal_year == latest, !suppressed), col = "title",
+         cols = c("n", "n_new", "n_vet", "median_new", "median_vet",
+                  "experience_premium", "compression_ratio")),
+    list(id = "compression", scope = "agency",
+         data = filter(a$compression_agency, fiscal_year == latest, !suppressed), col = "agency",
+         cols = c("n", "n_new", "n_vet", "median_new", "median_vet",
+                  "experience_premium", "compression_ratio")),
+
+    list(id = "gender", scope = "title", data = latest_ok(a$gender_by_title), col = "title",
+         cols = c("n", "male_mean", "female_mean", "gap", "gap_dollars", "female_share")),
+    list(id = "gender", scope = "agency", data = latest_ok(a$gender_by_agency), col = "agency",
+         cols = c("n", "male_mean", "female_mean", "gap", "gap_dollars", "female_share")),
+
+    list(id = "name-origin", scope = "title",
+         data = filter(a$name_origin_by_title, fiscal_year == latest, !suppressed,
+                       n_common + n_uncommon >= CHART_MIN_N),
+         col = "title",
+         cols = c("common_mean", "uncommon_mean", "gap", "gap_dollars", "uncommon_share")),
+    list(id = "name-origin", scope = "agency",
+         data = filter(a$name_origin_by_agency, fiscal_year == latest, !suppressed,
+                       n_common + n_uncommon >= CHART_MIN_N),
+         col = "agency",
+         cols = c("common_mean", "uncommon_mean", "gap", "gap_dollars", "uncommon_share")),
+
+    list(id = "tenure", scope = "title",
+         data = filter(a$retirement, !suppressed, n >= CHART_MIN_N), col = "title",
+         cols = c("n", "median_tenure", "pct_under_5", "pct_over_20", "pct_over_25")),
+    list(id = "tenure", scope = "agency",
+         data = filter(a$retirement_agency, !suppressed, n >= CHART_MIN_N), col = "agency",
+         cols = c("n", "median_tenure", "pct_under_5", "pct_over_20", "pct_over_25")),
+
+    list(id = "churn", scope = "agency",
+         data = filter(a$separations, fiscal_year == latest, !suppressed), col = "agency",
+         cols = c("active", "ceased", "separation_rate"))
+  )
+
+  dir.create(file.path(PATH_SITE_DATA, "rank"), showWarnings = FALSE, recursive = TRUE)
+  for (s in sets) {
+    out <- rank_file(s$data, s$col, s$cols)
+    if (is.null(out)) next
+    write_json_file(out, file.path(PATH_SITE_DATA, "rank",
+                                   paste0(s$id, "-", s$scope, ".json")))
+  }
+
+  # Column formatting hints. `fmt` maps to a formatter in the browser and
+  # `dir` says which end of the sort is the interesting one.
+  col_meta <- function(key, label, fmt, dir = "desc") {
+    list(key = key, label = label, fmt = fmt, dir = dir)
+  }
+  manifest <- list(
+    list(id = "pay", label = "Pay level",
+         blurb = "Median and mean base salary, with the tenth and ninetieth percentiles.",
+         sort = "median_salary",
+         columns = list(col_meta("n", "People", "num"),
+                        col_meta("median_salary", "Median", "dollars"),
+                        col_meta("mean_salary", "Mean", "dollars"),
+                        col_meta("p10", "10th pct", "dollars"),
+                        col_meta("p90", "90th pct", "dollars"))),
+    list(id = "real-change", label = "Real pay change",
+         blurb = "Change in median pay since the first reportable year, after New York inflation.",
+         sort = "real_change", sort_dir = "asc",
+         columns = list(col_meta("n", "People", "num"),
+                        col_meta("first_year", "From", "year"),
+                        col_meta("first_nominal", "Then", "dollars"),
+                        col_meta("last_nominal", "Now", "dollars"),
+                        col_meta("nominal_change", "Nominal", "delta"),
+                        col_meta("real_change", "Real", "delta"))),
+    list(id = "overtime", label = "Overtime",
+         blurb = "Share of total pay that came from overtime.",
+         sort = "ot_share_of_pay",
+         columns = list(col_meta("n", "People", "num"),
+                        col_meta("median_base", "Base", "dollars"),
+                        col_meta("median_total_comp", "Total pay", "dollars"),
+                        col_meta("ot_share_of_pay", "OT share", "pct"),
+                        col_meta("pct_with_ot", "Worked OT", "pct0"))),
+    list(id = "compression", label = "Salary compression",
+         blurb = "New hires against staff past ten years. A ratio at or above 1.0 means new hires earn more.",
+         sort = "compression_ratio",
+         columns = list(col_meta("n_new", "New hires", "num"),
+                        col_meta("median_new", "They earn", "dollars"),
+                        col_meta("n_vet", "10yr+", "num"),
+                        col_meta("median_vet", "They earn", "dollars"),
+                        col_meta("experience_premium", "Worth of 10 yrs", "dollars_signed"),
+                        col_meta("compression_ratio", "Ratio", "ratio"))),
+    list(id = "gender", label = "Gender gap",
+         blurb = "Estimated from first names. Read the method before citing it.",
+         sort = "gap",
+         columns = list(col_meta("n", "People", "num"),
+                        col_meta("male_mean", "Men", "dollars"),
+                        col_meta("female_mean", "Women", "dollars"),
+                        col_meta("gap", "Gap", "pct"),
+                        col_meta("female_share", "Share women", "pct0"))),
+    list(id = "name-origin", label = "Name origin gap",
+         blurb = "Pay by whether a first name appears in US birth records. A proxy for national origin, not a neutral category.",
+         sort = "gap",
+         columns = list(col_meta("common_mean", "Name in records", "dollars"),
+                        col_meta("uncommon_mean", "Name not in records", "dollars"),
+                        col_meta("gap", "Gap", "pct"),
+                        col_meta("uncommon_share", "Share affected", "pct0"))),
+    list(id = "tenure", label = "Tenure",
+         blurb = "Years at the current agency. Time at a previous agency does not count.",
+         sort = "pct_over_20",
+         columns = list(col_meta("n", "People", "num"),
+                        col_meta("median_tenure", "Median tenure", "years"),
+                        col_meta("pct_under_5", "Under 5 yrs", "pct0"),
+                        col_meta("pct_over_20", "Over 20 yrs", "pct0"),
+                        col_meta("pct_over_25", "Over 25 yrs", "pct0"))),
+    list(id = "churn", label = "Churn",
+         blurb = "Records marked ceased during the year. Mixes quits, retirements, layoffs and seasonal endings.",
+         sort = "separation_rate",
+         columns = list(col_meta("active", "Active", "num"),
+                        col_meta("ceased", "Ceased", "num"),
+                        col_meta("separation_rate", "Churn", "pct")))
+  )
+  # Record which scopes actually produced a file, so the browser never offers
+  # a toggle that leads to a 404.
+  for (i in seq_along(manifest)) {
+    id <- manifest[[i]]$id
+    # I() keeps a single scope as a one-element array rather than letting
+    # jsonlite unbox it to a bare string the browser would iterate as chars.
+    manifest[[i]]$scopes <- I(unlist(lapply(
+      Filter(function(s) s$id == id && !is.null(rank_file(s$data, s$col, s$cols)), sets),
+      function(s) s$scope)))
+  }
+  write_json_file(manifest, file.path(PATH_SITE_DATA, "metrics.json"))
+
+  # Kept flat because they are not per-entity rankings.
+  write_json_file(round_cols(as.data.frame(
+    a$hourly_by_title %>% filter(fiscal_year == latest, !suppressed) %>%
+      arrange(desc(n)) %>%
+      transmute(pay_basis, title, n, median_rate, real_median_rate,
+                median_hours, median_gross, pct_substantial))),
+    file.path(PATH_SITE_DATA, "hourly-titles.json"))
+  write_json_file(round_cols(as.data.frame(
+    a$headcount_agency %>%
+      transmute(agency, fiscal_year, n, n_salaried, n_hourly, n_daily))),
+    file.path(PATH_SITE_DATA, "headcount.json"))
 }
 
 
@@ -344,6 +574,7 @@ export_all <- function(a, prep) {
   export_citywide(a, prep)
   export_rankings(a)
   export_titles(a)
+  export_agencies(a)
   export_downloads(a, prep)
   message("Export complete.")
 }

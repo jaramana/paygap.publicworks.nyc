@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citywide — thepaygap.nyc</title>
+<meta name="description" content="City of New York payroll totals: pay against inflation and rent, the gender gap decomposed, hourly workers, and headcount since 2014.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/citywide.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap console">
+    <h1 class="console-h1">Citywide</h1>
+    <p class="console-sub">
+      The whole payroll at once. Use <a href="lookup.html">Look up</a> for a
+      single title or agency, or <a href="compare.html">Compare</a> to rank them.
+    </p>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-label" id="pay">Pay, prices and rent</h2>
+    <dl class="stats" id="cw-stats"></dl>
+    <figure>
+      <div id="cw-index" class="chart"></div>
+      <figcaption id="cw-index-cap"></figcaption>
+    </figure>
+    <div class="note-box">
+      <p>
+        <strong>The pay line is a median, not a raise.</strong> It is the middle
+        salary across everyone employed that year. When the City hires many
+        people into lower-paid titles the median falls even if no individual
+        salary was cut, and the reverse when hiring is concentrated at the top.
+        For an actual job over time, <a href="lookup.html">look up the title</a>.
+      </p>
+    </div>
+    <figure>
+      <div id="cw-rent" class="chart"></div>
+      <figcaption id="cw-rent-cap"></figcaption>
+    </figure>
+    <div class="note-box">
+      <p>
+        <strong>Two rent measures.</strong> The index above uses the BLS series
+        for rent of primary residence in the New York area, which tracks what
+        sitting tenants pay and is built like the inflation series, so the two
+        are comparable. The dollar figures use Zillow, which measures asking
+        rents on listed units: more visceral, less representative of anyone who
+        has not moved recently.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-label" id="gender">Gender gap</h2>
+    <div class="note-box caution">
+      <p>
+        <strong>How gender is inferred.</strong> The payroll does not record it.
+        These figures come from matching first names against Social Security
+        birth registrations and weighting each person by how often that name was
+        registered male or female. It estimates sex recorded at birth, cannot see
+        non-binary people, and misses about one employee in ten. It is an
+        estimate of a population pattern and says nothing about any individual.
+      </p>
+    </div>
+    <dl class="stats" id="g-stats"></dl>
+    <figure>
+      <div id="g-decomp" class="chart"></div>
+      <figcaption id="g-decomp-cap"></figcaption>
+    </figure>
+    <div class="note-box">
+      <p>
+        <strong>Why the split matters.</strong> A gap that sits mostly inside
+        job titles points at pay audits within classifications. A gap that sits
+        mostly between titles points somewhere else: who gets hired into which
+        jobs, which promotion paths exist, and whether historically
+        female-dominated titles are paid comparably to male-dominated ones doing
+        work of similar skill.
+      </p>
+    </div>
+    <figure>
+      <div id="g-trend" class="chart"></div>
+      <figcaption id="g-trend-cap"></figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-label" id="names">Name origin gap</h2>
+    <div class="note-box caution">
+      <p>
+        <strong>What this measures.</strong> Employees whose first name appears
+        in US birth records against those whose does not. Whether your name is
+        in those records is largely a function of whether you or your parents
+        were born in the United States, so this is a proxy for national origin
+        rather than a neutral category. It is here because the gap is real and
+        larger than the gender gap, not because the category is a natural one.
+      </p>
+    </div>
+    <figure>
+      <div id="n-chart" class="chart"></div>
+      <figcaption id="n-cap"></figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-label" id="hourly">Hourly and day-rate workers</h2>
+    <p class="hint">
+      Crossing guards, school aides, seasonal parks staff and election workers.
+      Every other figure on this site covers salaried employees only.
+    </p>
+    <dl class="stats" id="h-stats"></dl>
+    <div class="note-box caution">
+      <p>
+        <strong>This roster is strange, and the strangeness is the finding.</strong>
+        About half of it carries a base rate of exactly $1.00, nearly all of them
+        election workers paid a flat per-day stipend the payroll stores as a
+        placeholder. Around three quarters show zero regular hours for the year.
+        Averaging the roster whole produces a number describing nobody, so
+        placeholders are separated out and the continuously employed reported apart.
+      </p>
+    </div>
+    <figure>
+      <div id="h-chart" class="chart"></div>
+      <figcaption id="h-cap"></figcaption>
+    </figure>
+    <h3 class="section-label">By title</h3>
+    <div id="h-table"></div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-label" id="headcount">Headcount</h2>
+    <figure>
+      <div id="w-head" class="chart"></div>
+      <figcaption id="w-head-cap"></figcaption>
+    </figure>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>

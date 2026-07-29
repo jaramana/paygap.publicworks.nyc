@@ -25,6 +25,7 @@
   --rule-strong:  #c9c5bb;
 
   --accent:       #1f4ed8;   /* civic blue */
+  --on-accent:    #ffffff;   /* text that sits on --accent */
   --accent-soft:  #e8edfb;
   --accent-ink:   #163ba6;
   --warn:         #b4520a;   /* amber, for losses and gaps */
@@ -43,6 +44,10 @@
 
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
           "Helvetica Neue", Arial, sans-serif;
+  /* Monospace carries identifiers, queries and readouts. It is the main
+     signal that this is an instrument rather than an article. */
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
 
   --step: clamp(.25rem, .8vw, .5rem);
 }
@@ -59,6 +64,7 @@
     --rule-strong:  #3b414b;
 
     --accent:       #7fa2ff;
+    --on-accent:    #10131a;
     --accent-soft:  #1b2540;
     --accent-ink:   #a8c0ff;
     --warn:         #f0954a;
@@ -86,6 +92,7 @@
   --rule:         #2b2f37;
   --rule-strong:  #3b414b;
   --accent:       #7fa2ff;
+  --on-accent:    #10131a;
   --accent-soft:  #1b2540;
   --accent-ink:   #a8c0ff;
   --warn:         #f0954a;
@@ -192,6 +199,119 @@ main { padding-bottom: 5rem; }
   text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1rem;
 }
 
+.mono { font-family: var(--mono); font-size: .92em; }
+
+/* ---- Console (landing) ------------------------------------------ */
+/* Deliberately short: title, one sentence, then the input. The point of
+   the page is the box, so nothing competes with it above the fold. */
+
+.console { padding: clamp(2rem, 5vw, 3.5rem) 0 1.5rem; }
+.console-h1 {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  letter-spacing: -.028em; margin-bottom: .5rem;
+}
+.console-sub {
+  color: var(--ink-soft); max-width: 44rem;
+  font-size: 1.02rem; margin-bottom: 1.75rem;
+}
+.statusline {
+  color: var(--ink-faint); font-size: .8rem; margin: .9rem 0 0;
+  max-width: none; letter-spacing: -.01em;
+}
+
+.section-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-faint);
+  margin: 3rem 0 .3rem; border-bottom: 1px solid var(--rule);
+  padding-bottom: .5rem;
+}
+.hint { font-size: .88rem; color: var(--ink-faint); margin: .6rem 0 1rem; }
+
+/* ---- Search ------------------------------------------------------ */
+
+.search-shell { position: relative; max-width: 42rem; }
+.scope-tabs { display: flex; gap: .25rem; margin-bottom: .5rem; }
+.scope-tabs button {
+  font: inherit; font-size: .82rem; font-weight: 600;
+  padding: .3rem .8rem; border-radius: 6px;
+  border: 1px solid var(--rule); background: var(--paper-raised);
+  color: var(--ink-faint); cursor: pointer;
+}
+/* --accent is a deep blue in light mode and a pale blue in dark, so the
+   text that sits on it has to flip too. White on the dark-mode accent
+   measures 2.5:1, which fails. --on-accent carries the correct pairing. */
+.scope-tabs button[aria-selected="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+}
+.scope-tabs button:hover[aria-selected="false"] { color: var(--ink); border-color: var(--rule-strong); }
+
+.search-row input[type="search"] {
+  width: 100%; max-width: none;
+  font-size: 1.05rem; padding: .7rem .9rem;
+  border: 1.5px solid var(--rule-strong); border-radius: 9px;
+  font-family: var(--mono);
+}
+.search-row input[type="search"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+.results .r-name { font-weight: 500; }
+.results .meta { color: var(--ink-faint); font-size: .8rem; white-space: nowrap; }
+
+/* ---- Controls ---------------------------------------------------- */
+/* A visible control strip is most of what separates a tool from a page.
+   Query state belongs on screen, not buried in the pipeline. */
+
+.controls {
+  display: flex; flex-wrap: wrap; gap: .9rem;
+  padding: .9rem 1rem; margin: 1.25rem 0 1rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule); border-radius: 9px;
+}
+.control { display: flex; flex-direction: column; gap: .25rem; flex: 1 1 10rem; min-width: 0; }
+.control label {
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.control select { width: 100%; }
+
+.entity-head { margin-bottom: 1.25rem; }
+.entity-head .kind {
+  font-size: .74rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint); margin: 0 0 .25rem;
+}
+.entity-head h1 {
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem); margin-bottom: .3rem;
+}
+
+/* ---- Query cards ------------------------------------------------- */
+
+.query-grid {
+  list-style: none; padding: 0; margin: 0 0 1rem;
+  display: grid; gap: .75rem;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+}
+.query-card {
+  display: flex; flex-direction: column; gap: .3rem; height: 100%;
+  padding: .9rem 1rem; text-decoration: none; color: inherit;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule); border-left: 3px solid var(--rule-strong);
+  border-radius: 0 8px 8px 0;
+  transition: border-left-color .12s ease, background .12s ease;
+}
+.query-card:hover { border-left-color: var(--accent); background: var(--paper-sunken); }
+.query-card .q {
+  font-size: .78rem; color: var(--ink-faint);
+  overflow-wrap: anywhere;
+}
+.query-card .a {
+  font-size: 1.45rem; font-weight: 700; letter-spacing: -.025em;
+  line-height: 1.1; color: var(--ink);
+}
+.query-card .n { font-size: .84rem; color: var(--ink-soft); line-height: 1.4; }
+.query-card.small .a { font-size: 1rem; letter-spacing: -.01em; }
+
 /* ---- Stat tiles ------------------------------------------------- */
 
 .stats {
@@ -291,6 +411,18 @@ input[type="search"] { flex: 1 1 16rem; max-width: 26rem; }
 .neg { color: var(--warn); }
 .pos { color: var(--good); }
 .muted { color: var(--ink-faint); }
+
+code {
+  font-family: var(--mono); font-size: .9em;
+  background: var(--paper-sunken); padding: .1em .35em;
+  border-radius: 4px; border: 1px solid var(--rule);
+}
+.code-block {
+  background: var(--paper-sunken); border: 1px solid var(--rule);
+  border-radius: 8px; padding: .9rem 1rem; overflow-x: auto;
+  max-width: var(--measure);
+}
+.code-block code { background: none; border: 0; padding: 0; }
 
 /* ---- Notes ------------------------------------------------------ */
 

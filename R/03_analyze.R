@@ -105,9 +105,12 @@ real_wage_series <- function(payroll, prices, group_col = NULL) {
 # The full distribution for every title and year. The mean alone has been
 # flattering the data: salary distributions are right-skewed, so the median
 # is what an actual jobholder recognizes as "what people like me earn".
-title_profiles <- function(payroll) {
+group_profiles <- function(payroll, group_col = "title") {
+  # The counterpart column is what the group spans: a title spans agencies,
+  # an agency spans titles. Reported either way as n_agencies / n_titles.
+  other <- if (identical(group_col, "title")) "agency" else "title"
   salaried(payroll) %>%
-    group_by(title, fiscal_year) %>%
+    group_by(across(all_of(group_col)), fiscal_year) %>%
     summarise(
       n       = n(),
       mean_salary = mean(base_salary, na.rm = TRUE),
@@ -119,12 +122,17 @@ title_profiles <- function(payroll) {
       real_median = stats::median(real_salary, na.rm = TRUE),
       mean_ot_share = mean(ot_share, na.rm = TRUE),
       median_tenure = stats::median(tenure_years, na.rm = TRUE),
-      n_agencies = n_distinct(agency),
+      n_spanned = n_distinct(.data[[other]]),
       .groups = "drop"
     ) %>%
+    rename(!!(if (identical(group_col, "title")) "n_agencies" else "n_titles") := n_spanned) %>%
     suppress_small(c("mean_salary", "p10", "p25", "median_salary", "p75", "p90",
                      "real_median", "mean_ot_share", "median_tenure"))
 }
+
+# Kept as a named wrapper because "title_profiles" reads better at the call
+# site in run.R than group_profiles(payroll, "title").
+title_profiles <- function(payroll) group_profiles(payroll, "title")
 
 # Which agencies employ a title, and at what pay. Answers "am I underpaid
 # for doing the same job somewhere else in the City?"
@@ -179,7 +187,7 @@ overtime_dependence <- function(payroll, group_col = "title") {
 # someone past VETERAN_YEARS in the same title and year. A ratio near or above
 # 1.0 means experience buys nothing, which is the grievance civil servants
 # bring to bargaining and which nobody has quantified for NYC.
-salary_compression <- function(payroll) {
+salary_compression <- function(payroll, group_col = "title") {
   d <- salaried(payroll) %>%
     filter(!is.na(tenure_years)) %>%
     mutate(cohort = case_when(
@@ -190,7 +198,7 @@ salary_compression <- function(payroll) {
     filter(!is.na(cohort))
 
   d %>%
-    group_by(title, fiscal_year, cohort) %>%
+    group_by(across(all_of(group_col)), fiscal_year, cohort) %>%
     summarise(
       n = n(),
       median_salary = stats::median(base_salary, na.rm = TRUE),

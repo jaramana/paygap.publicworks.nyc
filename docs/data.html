@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data — thepaygap.nyc</title>
+<meta name="description" content="Every figure on this site as plain CSV, with a data dictionary. Free to reuse with attribution.">
+<link rel="stylesheet" href="css/site.css">
+<script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script src="js/site.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/data.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header data-chrome="masthead"></header>
+
+<main id="main">
+  <section class="wrap console">
+    <h1 class="console-h1">Data</h1>
+    <p class="console-sub">
+      Everything behind this site as plain CSV. Real numbers, not formatted
+      strings, so the files open straight into a spreadsheet or a script without
+      cleaning. Free to reuse with attribution.
+    </p>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap">
+    <div class="note-box">
+      <p>
+        <strong>Two conventions worth knowing before you open these.</strong>
+        Every file has an <code>n</code> column giving the group size and a
+        <code>suppressed</code> column that is TRUE where the group has fewer
+        than 30 people. Suppressed rows keep their identity and headcount but
+        have their statistics blanked, so "too small to report" is
+        distinguishable from "not in the data". Any column named
+        <code>real_</code> is already inflation-adjusted to the latest fiscal
+        year; plain salary columns are nominal dollars of their own year.
+      </p>
+    </div>
+
+    <h2 class="section-label">Files</h2>
+    <div id="file-table"></div>
+
+    <h2 class="section-label" id="dictionary">Data dictionary</h2>
+    <p class="hint">
+      What every shared column means. Also available as
+      <a href="downloads/data_dictionary.csv">data_dictionary.csv</a>.
+    </p>
+    <div id="dict-table"></div>
+
+    <h2 class="section-label">Rebuilding it yourself</h2>
+    <div class="prose">
+      <p>
+        The pipeline is five R scripts and an entry point. Clone the repository
+        and run:
+      </p>
+      <pre class="code-block"><code>Rscript run.R</code></pre>
+      <p>
+        The first run downloads about twelve years of payroll data and takes
+        roughly twenty minutes. After that only the newest fiscal year is
+        fetched. Every threshold, the base year for inflation and the suppression
+        floor live in <code>R/00_config.R</code>, so you can change an assumption
+        and rebuild the whole site against it.
+      </p>
+      <p>
+        Credit <a href="https://data.cityofnewyork.us/d/k397-673e">NYC Open
+        Data</a> as the source of the underlying payroll. See
+        <a href="method.html">method and limits</a> before citing anything.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer data-chrome="footer"></footer>
+</body>
+</html>
