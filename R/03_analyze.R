@@ -53,8 +53,8 @@ salary_percentiles <- function(x) {
 
 # An index series for one grouping (citywide, agency or title): median pay
 # each year in nominal dollars, alongside CPI, rent and ZORI, all set to 100
-# in INDEX_YEAR. This generalizes the chart Allen built by hand for the
-# Emergency Preparedness Specialist title.
+# in INDEX_YEAR. Generalizes the single-title real-pay chart this project
+# started from, so any title or agency can be read the same way.
 real_wage_series <- function(payroll, prices, group_col = NULL) {
   d <- salaried(payroll)
 
