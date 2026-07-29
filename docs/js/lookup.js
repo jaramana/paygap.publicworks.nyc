@@ -257,8 +257,9 @@
       document.getElementById('e-breakdown').innerHTML =
         '<p class="muted">Nothing above the reporting threshold.</p>';
     }
-
-    entity.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Deliberately no scrolling here. The result renders immediately below
+    // the search box, so moving the page would only push the box the reader
+    // just used off screen and cost them their bearings.
   }
 
   // ---- Browse all --------------------------------------------------
