@@ -1,4 +1,4 @@
-# thepaygap.nyc / export
+# The Pay Gap (paygap.publicworks.nyc) / export
 #
 # Writes two things from the same analysis objects:
 #

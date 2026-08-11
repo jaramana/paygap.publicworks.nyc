@@ -1,4 +1,4 @@
-# thepaygap.nyc / analysis
+# The Pay Gap (paygap.publicworks.nyc) / analysis
 #
 # One function per theme. Each takes the prepared payroll and returns a tidy
 # frame. No file I/O here and no formatting: numbers stay numbers so the

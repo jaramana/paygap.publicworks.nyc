@@ -1,4 +1,4 @@
-/* thepaygap.nyc / tables
+/* The Pay Gap (paygap.publicworks.nyc) / tables
    ------------------------------------------------------------------
    Sortable, filterable tables with CSV export. Replaces the jQuery and
    DataTables pair the old site shipped, which was about 15,000 lines to

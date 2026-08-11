@@ -1,4 +1,4 @@
-/* thepaygap.nyc / charts
+/* The Pay Gap (paygap.publicworks.nyc) / charts
    ------------------------------------------------------------------
    Four chart types, hand-rolled as inline SVG:
 

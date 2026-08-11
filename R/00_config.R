@@ -1,4 +1,4 @@
-# thepaygap.nyc / configuration
+# The Pay Gap (paygap.publicworks.nyc) / configuration
 #
 # Every tunable in the project lives here. Change a number, re-run run.R,
 # and the whole site updates. Nothing below this file should hardcode a

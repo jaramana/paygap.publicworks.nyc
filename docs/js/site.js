@@ -1,4 +1,4 @@
-/* thepaygap.nyc / shared behaviour
+/* The Pay Gap (paygap.publicworks.nyc) / shared behaviour
    ------------------------------------------------------------------
    Formatting, data loading, the theme toggle and URL parameters.
    Every page loads this first. No dependencies. */
@@ -82,7 +82,7 @@
 
   function load(path) {
     if (cache[path]) return cache[path];
-    // Relative so the site works at a subpath (jaramana.github.io/thepaygap.nyc)
+    // Relative so the site works at a subpath (jaramana.github.io/paygap.publicworks.nyc)
     // as readily as at a bare domain.
     cache[path] = fetch('data/' + path).then(function (r) {
       if (!r.ok) throw new Error('Could not load ' + path + ' (' + r.status + ')');
@@ -172,7 +172,13 @@
       head.className = 'masthead';
       head.innerHTML =
         '<div class="wrap masthead-inner">' +
-          '<a class="wordmark" href="index.html">thepaygap<span>.nyc</span></a>' +
+          '<div class="wordmark-group">' +
+            // The parent link is the kicker, not the mark: this site is a
+            // product of publicworks.nyc, not a page inside it, so the product
+            // name stays the large, primary link and the parent stays small.
+            '<a class="parent-mark" href="https://publicworks.nyc">publicworks.nyc</a>' +
+            '<a class="wordmark" href="index.html">The Pay Gap</a>' +
+          '</div>' +
           '<nav class="nav" aria-label="Sections">' + links +
             '<button class="theme-toggle" type="button">Auto</button>' +
           '</nav>' +
@@ -203,8 +209,8 @@
           '</ul></div>' +
           '<div><h4>Project</h4><ul>' +
             '<li><a href="about.html">About this site</a></li>' +
-            '<li><a href="https://github.com/jaramana/thepaygap.nyc">Source on GitHub</a></li>' +
-            '<li><a href="https://github.com/jaramana/thepaygap.nyc/issues">Report an error</a></li>' +
+            '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc">Source on GitHub</a></li>' +
+            '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc/issues">Report an error</a></li>' +
           '</ul></div>' +
         '</div>' +
         '<p class="colophon">Public data, public method. Built with R, ' +

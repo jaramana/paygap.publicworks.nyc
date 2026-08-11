@@ -70,7 +70,7 @@
     normalizeState();
     var m = meta();
     syncControls();
-    document.title = m.label + ' by ' + state.scope + ' — thepaygap.nyc';
+    document.title = m.label + ' by ' + state.scope + ' — The Pay Gap';
 
     PG.load('rank/' + state.metric + '-' + state.scope + '.json').then(function (all) {
       var rows = all.filter(function (r) {

@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 #
-# thepaygap.nyc
+# The Pay Gap (paygap.publicworks.nyc)
 #
 # Runs the whole pipeline: download, prepare, analyze, export.
 # From the project root:

@@ -1,4 +1,4 @@
-# thepaygap.nyc / prepare
+# The Pay Gap (paygap.publicworks.nyc) / prepare
 #
 # Turns the raw cache into three tidy objects the analysis layer consumes:
 #

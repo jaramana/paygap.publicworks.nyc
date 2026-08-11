@@ -42,7 +42,7 @@
     var isAgency = d.kind === 'agency';
     entity.hidden = false;
     browse.hidden = true;
-    document.title = d.title + ' — thepaygap.nyc';
+    document.title = d.title + ' — The Pay Gap';
 
     var prof   = d.profile.filter(function (r) { return !r.suppressed; });
     var latest = prof[prof.length - 1];

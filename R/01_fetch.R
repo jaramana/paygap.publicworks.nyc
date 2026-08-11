@@ -1,4 +1,4 @@
-# thepaygap.nyc / fetch
+# The Pay Gap (paygap.publicworks.nyc) / fetch
 #
 # Downloads every external source into data-raw/ and caches it there.
 # Historical fiscal years never change, so a re-run only fetches whatever
