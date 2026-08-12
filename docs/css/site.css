@@ -161,19 +161,20 @@ a:hover { color: var(--accent-ink); }
 main { padding-bottom: 5rem; }
 
 /* ---- Masthead --------------------------------------------------- */
+/* The shared portfolio header. Every publicworks.nyc site uses the same
+   measurements, so moving between them does not feel like moving between
+   strangers. Only two things are allowed to differ: --accent, which carries
+   the site's identity through the hover and current-page states, and the
+   theme toggle, which exists here because this is the only site with a dark
+   mode. Do not retune the sizes below on one site alone. */
 
-.masthead {
-  border-bottom: 1px solid var(--rule);
-  background: var(--paper);
-  position: sticky; top: 0; z-index: 20;
-  backdrop-filter: saturate(180%) blur(12px);
-}
+.masthead { border-bottom: 1px solid var(--rule); background: var(--paper); }
 .masthead-inner {
   display: flex; align-items: center; gap: 1.25rem;
-  padding: .7rem 0; flex-wrap: wrap;
+  padding: .55rem 0; flex-wrap: wrap;
 }
 .wordmark {
-  font-weight: 700; letter-spacing: -.03em; font-size: 1.1rem;
+  font-weight: 700; letter-spacing: -.03em; font-size: 1.25rem;
   color: var(--ink); text-decoration: none; white-space: nowrap;
 }
 
