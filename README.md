@@ -2,8 +2,7 @@
 
 An analysis of payroll data for the City of New York (the City).
 
-The site is at [paygap.publicworks.nyc](https://paygap.publicworks.nyc), a
-project of [publicworks.nyc](https://publicworks.nyc).
+The site is at [paygap.publicworks.nyc](https://paygap.publicworks.nyc).
 
 ## Background
 

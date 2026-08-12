@@ -172,14 +172,6 @@ main { padding-bottom: 5rem; }
   display: flex; align-items: center; gap: 1.25rem;
   padding: .7rem 0; flex-wrap: wrap;
 }
-/* This site is a product of publicworks.nyc, not a page inside it, so the
-   parent sits as a small kicker above the mark rather than folded into it. */
-.wordmark-group { display: flex; flex-direction: column; gap: .05rem; line-height: 1.1; }
-.parent-mark {
-  font-size: .68rem; font-weight: 600; letter-spacing: .02em;
-  color: var(--accent); text-decoration: none; white-space: nowrap;
-}
-.parent-mark:hover { text-decoration: underline; }
 .wordmark {
   font-weight: 700; letter-spacing: -.03em; font-size: 1.1rem;
   color: var(--ink); text-decoration: none; white-space: nowrap;

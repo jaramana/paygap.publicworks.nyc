@@ -172,13 +172,7 @@
       head.className = 'masthead';
       head.innerHTML =
         '<div class="wrap masthead-inner">' +
-          '<div class="wordmark-group">' +
-            // The parent link is the kicker, not the mark: this site is a
-            // product of publicworks.nyc, not a page inside it, so the product
-            // name stays the large, primary link and the parent stays small.
-            '<a class="parent-mark" href="https://publicworks.nyc">publicworks.nyc</a>' +
-            '<a class="wordmark" href="index.html">The Pay Gap</a>' +
-          '</div>' +
+          '<a class="wordmark" href="index.html">The Pay Gap</a>' +
           '<nav class="nav" aria-label="Sections">' + links +
             '<button class="theme-toggle" type="button">Auto</button>' +
           '</nav>' +
@@ -211,6 +205,9 @@
             '<li><a href="about.html">About this site</a></li>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc">Source on GitHub</a></li>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc/issues">Report an error</a></li>' +
+            // publicworks.nyc is the index the other projects are filed under.
+            // A link at the foot is the whole of its presence here.
+            '<li><a href="https://publicworks.nyc">publicworks.nyc</a></li>' +
           '</ul></div>' +
         '</div>' +
         '<p class="colophon">Public data, public method. Built with R, ' +
