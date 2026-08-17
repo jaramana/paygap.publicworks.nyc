@@ -1,7 +1,7 @@
 /* The Pay Gap (paygap.publicworks.nyc)
    ------------------------------------------------------------------
    One stylesheet, no build step, no webfonts. Light and dark are both
-   first-class: every colour is a token, and the only thing the dark
+   first-class: every color is a token, and the only thing the dark
    block does is repoint the tokens.
 
    The look borrows the restraint of late-2000s Apple (a lot of white,
@@ -153,7 +153,7 @@ a:hover { color: var(--accent-ink); }
 .prose { max-width: var(--measure); }
 
 /* .prose on the same element as .wrap would shrink the wrap to the reading
-   measure, and the wrap's auto margins would then centre the whole column
+   measure, and the wrap's auto margins would then center the whole column
    away from the page's left edge. Keep the wrap full width and constrain
    its children instead. */
 .wrap.prose { max-width: none; }
@@ -336,8 +336,8 @@ main { padding-bottom: 5rem; }
 /* ---- Stat tiles ------------------------------------------------- */
 
 /* Hairlines come from a box-shadow on each tile rather than a 1px grid gap
-   over a coloured container. The gap trick leaves a bare rectangle of
-   container colour wherever the last row is short of a full set, which
+   over a colored container. The gap trick leaves a bare rectangle of
+   container color wherever the last row is short of a full set, which
    happens at any width where the tile count does not divide evenly.
    box-shadow takes no space and is clipped at the rounded corner. */
 .stats {

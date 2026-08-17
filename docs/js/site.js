@@ -1,4 +1,4 @@
-/* The Pay Gap (paygap.publicworks.nyc) / shared behaviour
+/* The Pay Gap (paygap.publicworks.nyc) / shared behavior
    ------------------------------------------------------------------
    Formatting, data loading, the theme toggle and URL parameters.
    Every page loads this first. No dependencies. */
@@ -134,7 +134,7 @@
     function render() {
       var t = currentTheme();
       btn.textContent = label[t];
-      btn.setAttribute('aria-label', 'Colour theme: ' + label[t] + '. Click to change.');
+      btn.setAttribute('aria-label', 'Color theme: ' + label[t] + '. Click to change.');
     }
     render();
     btn.addEventListener('click', function () {

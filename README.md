@@ -71,7 +71,7 @@ employee's first name appears in US birth records at least 25 times. This is
 a proxy for being born outside the US or to immigrant parents. It therefore
 reads on ethnicity and national origin, not on any neutral quality of a
 name. The FY2025 gap on this measure is 9.1%, larger than the gender gap. It
-is published because it is real, and labelled because it is easy to misread.
+is published because it is real, and labeled because it is easy to misread.
 
 **Hourly workers need care.** About half the "per Hour" roster is
 election-day poll workers carrying a $1.00 placeholder rate rather than a
@@ -153,5 +153,8 @@ elsewhere hardcodes a year or a cutoff.
 ## License
 
 Code is released under the
-[BSD 3-Clause license](http://opensource.org/licenses/BSD-3-Clause). The
-derived data in `docs/downloads/` is free to reuse with attribution.
+[BSD 3-Clause license](https://opensource.org/licenses/BSD-3-Clause). The
+compiled data is free to reuse with attribution. The underlying data is
+published by NYC Open Data, the Bureau of Labor Statistics, Zillow, and the
+Social Security Administration, and carries their terms. If you republish a
+figure, carry its fiscal year with it.

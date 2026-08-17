@@ -8,7 +8,7 @@
      stackChart  100% stacked horizontal bar (tenure bands)
 
    Written by hand rather than pulled from a library because there are
-   only four shapes here, and this way every colour is a CSS variable,
+   only four shapes here, and this way every color is a CSS variable,
    so dark mode and printing come for free and nothing is fighting a
    library's defaults. */
 
