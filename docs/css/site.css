@@ -38,6 +38,9 @@
   --series-4: #1c6b45;
 
   --shadow: 0 1px 2px rgba(20,22,28,.05), 0 8px 24px -12px rgba(20,22,28,.18);
+  /* The plain-panel shadow. One hairline lift, no ambient spread: a panel
+     sits on the paper, it does not float above it. */
+  --shadow-tight: 0 1px 2px rgba(20,22,28,.06);
 
   --measure: 34rem;
   --wide:    72rem;
@@ -77,6 +80,7 @@
     --series-4: #5cc596;
 
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --shadow-tight: 0 1px 2px rgba(0,0,0,.4);
   }
 }
 
@@ -103,6 +107,7 @@
   --series-3: #b79bf0;
   --series-4: #5cc596;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --shadow-tight: 0 1px 2px rgba(0,0,0,.4);
 }
 
 /* ---- Base ------------------------------------------------------- */
@@ -475,10 +480,14 @@ code {
   font-size: .89rem;
   color: var(--ink-soft);
   margin: 1.5rem 0;
-  max-width: 44rem;
+  max-width: 46rem;
 }
 .note-box strong { color: var(--ink); }
 .note-box.caution { border-left-color: var(--warn); background: var(--warn-soft); }
+/* The global `p` rule holds a paragraph to the 34rem reading measure. Inside a
+   note the box is already the measure, so a second cap left the text stopping
+   short of the box it sits in. Both sister sites carry this line. */
+.note-box p { max-width: none; }
 .note-box p:last-child { margin-bottom: 0; }
 
 /* ---- Chapter index ---------------------------------------------- */
@@ -488,14 +497,18 @@ code {
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   padding: 0; list-style: none;
 }
+/* PLAIN PANEL — the suite's static box. Defined identically on all three
+   sites. The card used to lift 2px on hover, which no other card in the suite
+   does; the border taking the accent is the shared signal. */
 .chapters a {
   display: block; height: 100%;
   background: var(--paper-raised);
   border: 1px solid var(--rule); border-radius: 10px;
   padding: 1.1rem 1.2rem; text-decoration: none; color: inherit;
-  transition: border-color .15s ease, transform .15s ease;
+  box-shadow: var(--shadow-tight);
+  transition: border-color .15s ease;
 }
-.chapters a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.chapters a:hover { border-color: var(--accent); }
 .chapters h3 { margin: 0 0 .3rem; font-size: 1.02rem; color: var(--ink); }
 .chapters p { margin: 0; font-size: .89rem; color: var(--ink-soft); max-width: none; }
 
@@ -553,6 +566,21 @@ code {
 
 /* A small thing for anyone who reads the seams. */
 .colophon { margin-top: 1.5rem; font-size: .82rem; }
+/* The build credit, quieter than the disclaimer above it. The colophon now
+   carries the suite's disclaimer verbatim and nothing else, so the voice that
+   used to ride along at the end of it lives here instead. */
+.built-with { margin: .5rem 0 0; font-size: .82rem; color: var(--ink-faint); }
+/* The portfolio mark, at the very foot and outside the link columns. Set
+   quieter than the colophon above it and separated by a rule: publicworks.nyc
+   is the cabinet these projects are filed in, not a section of this site, so
+   it is announced once and does not compete with the site's own navigation. */
+.portfolio {
+  margin: 1.75rem 0 0; padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: .8rem; letter-spacing: .02em; color: var(--ink-faint);
+}
+.portfolio a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+.portfolio a:hover { color: var(--accent); text-decoration: underline; }
 .colophon .wink { cursor: help; border-bottom: 1px dotted var(--rule-strong); }
 
 @media print {

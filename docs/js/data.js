@@ -28,10 +28,12 @@
     return { file: r[0], name: r[1], desc: r[2] };
   });
 
+  // A plain table, no search box. The same three columns carry the two files
+  // Schools Finder publishes and the nineteen here, which is the whole point of
+  // using a table for this across the suite.
   PGTable.render('#file-table', {
     rows: FILES,
-    search: true,
-    searchPlaceholder: 'Search files…',
+    search: false,
     sortKey: null,
     columns: [
       { key: 'name', label: 'Dataset', name: true,
@@ -62,8 +64,35 @@
             render: function (v) { return '<span style="white-space:normal">' + v + '</span>'; } }
         ]
       });
+      // The browser jumped to the anchor before these tables existed. Every
+      // row they added moved the target, so re-apply the hash now.
+      restoreHash();
     })
     .catch(function (e) { PG.fail(document.getElementById('dict-table'), e); });
+
+  function restoreHash() {
+    if (!location.hash) return;
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (!target) return;
+
+    // Stop the moment the reader takes over. Re-applying the hash under
+    // someone who has already started scrolling is worse than landing in the
+    // wrong place.
+    var taken = false;
+    function yieldToUser() { taken = true; }
+    ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+      window.addEventListener(ev, yieldToUser, { once: true, passive: true });
+    });
+
+    // setTimeout rather than requestAnimationFrame: rAF is throttled in a
+    // background tab, so a link opened in one would never be corrected.
+    function land() {
+      if (taken) return;
+      target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    }
+    setTimeout(land, 0);
+    window.addEventListener('load', function () { setTimeout(land, 0); }, { once: true });
+  }
 
   // Small quoted-CSV reader: the dictionary text contains commas inside quotes.
   function parseCsv(text) {

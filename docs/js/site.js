@@ -156,7 +156,7 @@
     { href: 'lookup.html',   nav: 'Look up' },
     { href: 'compare.html',  nav: 'Compare' },
     { href: 'citywide.html', nav: 'Citywide' },
-    { href: 'data.html',     nav: 'Data' },
+    { href: 'method.html',   nav: 'Method' },
     { href: 'about.html',    nav: 'About' }
   ];
 
@@ -190,10 +190,11 @@
             '<li><a href="compare.html">Compare</a></li>' +
             '<li><a href="citywide.html">Citywide</a></li>' +
           '</ul></div>' +
+          // Pages, not sections. Three entries that all opened method.html at
+          // a different anchor read as three destinations and were one.
           '<div><h4>Reference</h4><ul>' +
-            '<li><a href="data.html">Download the data</a></li>' +
-            '<li><a href="method.html">Method and limits</a></li>' +
-            '<li><a href="data.html#dictionary">Data dictionary</a></li>' +
+            '<li><a href="method.html">Method</a></li>' +
+            '<li><a href="about.html">About</a></li>' +
           '</ul></div>' +
           '<div><h4>Sources</h4><ul>' +
             '<li><a href="https://data.cityofnewyork.us/d/k397-673e">NYC Citywide Payroll</a></li>' +
@@ -201,20 +202,28 @@
             '<li><a href="https://www.zillow.com/research/data/">Zillow rent index</a></li>' +
             '<li><a href="https://www.ssa.gov/oact/babynames/">SSA baby names</a></li>' +
           '</ul></div>' +
+          // Code, not pages. About lives in Reference and was listed twice.
           '<div><h4>Project</h4><ul>' +
-            '<li><a href="about.html">About this site</a></li>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc">Source on GitHub</a></li>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc/issues">Report an error</a></li>' +
-            // publicworks.nyc is the index the other projects are filed under.
-            // A link at the foot is the whole of its presence here.
-            '<li><a href="https://publicworks.nyc">publicworks.nyc</a></li>' +
           '</ul></div>' +
         '</div>' +
-        '<p class="colophon">Public data, public method. Built with R, ' +
+        // The disclaimer, word for word as it appears in the home page banner.
+        // One sentence, in one place in the source of each project, so the two
+        // can never drift apart. Only the agency changes between projects.
+        '<p class="colophon"><strong>This is not an official product.</strong> ' +
+          'It is an independent initiative, not affiliated with, endorsed by, ' +
+          'or produced by the <a href="https://www.nyc.gov/site/opa/index.page">' +
+          'Office of Payroll Administration</a> or the City of New York. ' +
+          'Please refer to them for authoritative information.</p>' +
+        '<p class="built-with">Public data, public method, built with R, ' +
           'no tracking, no accounts, ' +
           '<span class="wink" title="Fiscal years run July to June, which is the single most common way to get these numbers wrong.">' +
-          'and strong opinions about fiscal years</span>. ' +
-          'Not affiliated with the City of New York.</p>' +
+          'and strong opinions about fiscal years</span>.</p>' +
+        // The portfolio mark, below everything and outside the columns. It is
+        // a filing cabinet, not a section of this site, so it is announced
+        // once at the foot rather than filed among the site's own pages.
+        '<p class="portfolio">A <a href="https://publicworks.nyc">publicworks.nyc</a> project</p>' +
         '</div>';
     }
   }

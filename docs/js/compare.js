@@ -70,7 +70,7 @@
     normalizeState();
     var m = meta();
     syncControls();
-    document.title = m.label + ' by ' + state.scope + ' — The Pay Gap';
+    document.title = m.label + ' — The Pay Gap';
 
     PG.load('rank/' + state.metric + '-' + state.scope + '.json').then(function (all) {
       var rows = all.filter(function (r) {
@@ -161,7 +161,7 @@
         tenure: 'Years at the current agency. Time at a previous agency does ' +
           'not count, so this understates real public service.',
         churn: 'Ceased records mix quits, retirements, layoffs, seasonal ' +
-          'endings and deaths. Agencies running seasonal programmes sit high ' +
+          'endings and deaths. Agencies running seasonal programs sit high ' +
           'every year for ordinary reasons. Read it as churn, not dissatisfaction.',
         overtime: 'The payroll records hours and dollars, not whether a shift ' +
           'was volunteered or mandated.',
@@ -173,7 +173,7 @@
       if (NOTES[state.metric]) {
         note.hidden = false;
         note.innerHTML = '<p>' + NOTES[state.metric] +
-          ' <a href="method.html">Method and limits</a>.</p>';
+          ' <a href="method.html">Method</a>.</p>';
       } else {
         note.hidden = true;
       }
