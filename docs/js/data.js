@@ -86,12 +86,22 @@
 
     // setTimeout rather than requestAnimationFrame: rAF is throttled in a
     // background tab, so a link opened in one would never be corrected.
+    // Re-land only while the target is still moving, and stop the moment it
+    // is not. A wide table's scroll hint is added and taken away again as
+    // layout settles, which is a line of text appearing and disappearing
+    // above the target; landing before it settles leaves the heading just off
+    // the top of the screen.
+    var lastTop = null;
     function land() {
       if (taken) return;
+      var top = Math.round(target.getBoundingClientRect().top + window.scrollY);
+      if (top === lastTop) return;
+      lastTop = top;
       target.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
     setTimeout(land, 0);
     window.addEventListener('load', function () { setTimeout(land, 0); }, { once: true });
+    [120, 350, 700].forEach(function (ms) { setTimeout(land, ms); });
   }
 
   // Small quoted-CSV reader: the dictionary text contains commas inside quotes.
