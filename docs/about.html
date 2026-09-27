@@ -17,10 +17,8 @@
   <section class="wrap console">
     <h1 class="console-h1">About</h1>
     <p class="console-sub">
-      The Pay Gap is a lookup tool for the City of New York payroll. Search a
-      civil service title or an agency and it reports what the job pays, how
-      much of that comes from overtime, how long people stay, and whether the
-      pay has kept pace with New York prices and rent since 2014.
+      The Pay Gap brings New York City payroll into a search by title and
+      agency, with overtime, tenure, inflation and rent comparisons.
     </p>
     <p class="statusline mono" data-status></p>
   </section>
@@ -33,10 +31,7 @@
       difficult to search by title or agency.
     </p>
     <p>
-      This site joins, adjusts and totals the numbers once, so a lookup takes
-      seconds instead of an afternoon. It is for anyone with a question about
-      City pay: the people who do the jobs, the people who manage them,
-      reporters, researchers, and people deciding whether to apply.
+      This site prepares the payroll for searches by title and agency.
     </p>
 
     <h2>History</h2>
@@ -93,35 +88,25 @@
 
     <h2>Scope</h2>
     <p>
-      There is no name search and no individual lookup. The payroll data does
-      list names, but the useful questions here are about titles and
-      agencies. A way to look up a named person's salary would add little
-      worth knowing.
+      There is no name search or individual lookup. The source payroll
+      includes names; this site reports by title and agency.
+    </p>
+    <p>
+      Read <a href="method.html">Method</a> before citing a figure. Gender is
+      inferred from first names, tenure counts time at the current agency,
+      and the data cannot say whether pay is fair.
     </p>
 
     <h2>Built</h2>
     <p>
-      The site is static HTML, CSS and JavaScript, served from GitHub Pages.
-      R does the joining, deflating and aggregating; the browser only reads
-      the results.
-    </p>
-    <p>
-      The pipeline and the analysis are public in the
-      <a href="https://github.com/jaramana/paygap.publicworks.nyc">repository</a>,
-      released under a BSD 3-Clause license. Every figure on this site can be
-      rebuilt from source.
+      R joins payroll records, adjusts dollar amounts and aggregates results,
+      using data.table, dplyr, tidyr and jsonlite. The website uses static
+      HTML, CSS and JavaScript, served from GitHub Pages.
     </p>
 
     <h2>Independence</h2>
     <p>
       No agency reviewed this site.
-    </p>
-    <p>
-      Read <a href="method.html">Method</a> before you cite anything. It sets
-      out how the figures are built, and, more usefully, what this data
-      cannot tell you: gender is inferred from first names, not recorded;
-      tenure counts time at the current agency, not in public service; and
-      nothing here says whether the pay is fair.
     </p>
 
     <h2>Credits</h2>
@@ -133,15 +118,15 @@
       caveat of each one.
     </p>
     <p>
-      Built with R and Claude.
+      Claude was used in development.
     </p>
 
     <h2>Reuse</h2>
     <p>
-      The code is released under the BSD 3-Clause license. All the
-      underlying tables are on the
-      <a href="method.html#downloads">method page</a> as plain CSV, free to
-      reuse with attribution.
+      Code is BSD 3-Clause licensed. Compiled data can be reused with
+      attribution; the source data retain their own terms. The
+      <a href="method.html#downloads">method page</a> has the underlying CSV
+      tables. Carry the fiscal year when republishing a figure.
     </p>
 
     <h2>Contact</h2>

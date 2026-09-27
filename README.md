@@ -70,8 +70,10 @@ before using it.
 
 ## Tools
 
-Data pipeline: R, `data.table`, `dplyr`, `tidyr` and `jsonlite`. Site: HTML, CSS
-and JavaScript. Claude was used in development.
+Data pipeline: R joins payroll records, adjusts dollar amounts and aggregates
+results, using `data.table`, `dplyr`, `tidyr` and `jsonlite`. Website: static
+HTML, CSS and JavaScript, served from GitHub Pages. Claude was used in
+development.
 
 ## License and reuse
 
