@@ -93,9 +93,17 @@
 
   function fail(el, err) {
     if (!el) return;
-    el.innerHTML = '<div class="note-box caution"><p><strong>Could not load the data.</strong> ' +
-      String(err && err.message ? err.message : err) + '</p></div>';
+    var message = (err && err.message) ? err.message : String(err);
+    el.innerHTML = '<div class="note-box caution" role="alert"><p><strong>' +
+      'Could not load the data.</strong> ' + escapeHtml(message) +
+      ' Try reloading. If it keeps happening, the build may be mid-publish.</p></div>';
     if (window.console) console.error(err);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
   }
 
   // ---- URL parameters ---------------------------------------------
