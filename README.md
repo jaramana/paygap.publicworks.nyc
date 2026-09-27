@@ -1,160 +1,80 @@
 # The Pay Gap
 
-An analysis of payroll data for the City of New York (the City).
-
-The site is at [paygap.publicworks.nyc](https://paygap.publicworks.nyc).
-
-## Background
-
-The City publishes payroll data for its employees through NYC Open Data.
-This site turns that data into an open analysis of what the City pays its
-288,000 employees, covering fiscal years 2014 through 2025.
-
-The site is for City employees and the public. The goal is a site a civil
-servant can open the week before a union meeting and find the number they
-need.
+[The Pay Gap](https://paygap.publicworks.nyc) is an independent
+[publicworks.nyc](https://publicworks.nyc) site for
+exploring what New York City pays its employees. It covers fiscal years 2014–2025,
+with views by agency and job title.
 
 ## Data sources
 
-- **Payroll:** NYC Citywide Payroll Data (Fiscal Year), dataset `k397-673e`
-- **Inflation:** BLS series `CUURS12ASA0`, CPI-U for New York-Newark-Jersey City
-- **Rent:** BLS series `CUURS12ASEHA`, rent of primary residence, same area
-- **Rent in dollars:** Zillow Observed Rent Index, New York metro
-- **Names:** Social Security Administration national baby names, 1880 to 2025
+| Source | Used for |
+| --- | --- |
+| [Citywide Payroll Data](https://data.cityofnewyork.us/d/k397-673e), `k397-673e` | Pay, titles, agencies and employment records |
+| [BLS New York area CPI-U](https://www.bls.gov/cpi/), `CUURS12ASA0` | Inflation-adjusted pay |
+| [BLS New York area rent index](https://www.bls.gov/cpi/), `CUURS12ASEHA` | Rent growth |
+| [Zillow Observed Rent Index](https://www.zillow.com/research/data/) | Rent in dollars for the New York metro area |
+| [Social Security Administration baby names](https://www.ssa.gov/oact/babynames/limits.html) | First-name comparisons |
 
-## Analysis
+## Method and limits
 
-### What the data says
+In FY2025, the median base salary was $91,938. Nominal pay rose 37.8% from FY2014,
+while New York area inflation rose 31.5% and rent rose 38.8%. The estimated gender
+gap was 3.5%: about 0.7 percentage points within titles and 2.9 points from the
+distribution of employees across titles. These comparisons use fiscal-year
+averages; FY2025 runs from July 2024 through June 2025.
 
-For fiscal year 2025:
+- Groups with fewer than 30 employees have their statistics suppressed. The
+  downloads retain those rows with a `suppressed` flag.
+- The estimated gender comparison uses the male and female shares of SSA birth
+  registrations for each first name. The payroll has no gender field. The method
+  cannot establish an employee's sex recorded at birth or gender identity.
+  Sufficiently matched names cover about 89% of employees.
+- The "uncommon names" comparison separates names with fewer than 25 US birth
+  registrations from other names. Its FY2025 pay gap is 9.1%. It does not
+  establish anyone's birthplace, ethnicity or national origin.
+- Hourly pay excludes rates below $5 and above $500, which include bookkeeping
+  artifacts. Agency tenure is not total public-service tenure. `CEASED` records a
+  departure, not its cause.
 
-| | |
-|---|---|
-| Median base salary | $91,938 |
-| Nominal pay growth since FY2014 | +37.8% |
-| NY-area inflation over the same period | +31.5% |
-| NY-area rent over the same period | +38.8% |
-| Gender pay gap | 3.5% |
-| of which, unequal pay inside the same title | 0.7 points |
-| of which, women concentrated in lower-paid titles | 2.9 points |
+The [method page](https://paygap.publicworks.nyc/method.html) explains the
+calculations and download fields.
 
-City pay has outrun inflation by a few points since 2014. It has not kept up
-with rent.
+## Corrections to earlier figures
 
-The gender pay gap is mostly not caused by two people in the same job being
-paid differently. About four fifths of the gap comes from how men and women
-are distributed across job titles. That is a different problem, and it needs
-a different remedy.
+The current analysis replaces a 2020 script whose errors changed published
+results:
 
-### Method and its limits
+1. The pay-gap denominator was `male + female` instead of `male`, roughly halving
+   reported gaps. The FY2021 citywide figure of 1.1% should have been about 2.2%.
+2. Summary tables reused data from the preceding loop, so some year labels did not
+   match their contents.
+3. The uncommon-names chart calculated the gender gap and overwrote the gender-gap
+   file. No valid uncommon-names chart was published.
+4. Inflation used a national index and one November reading instead of New York
+   area fiscal-year averages.
+5. Downloads formatted numbers as currency and percentage strings, making them
+   difficult to analyze.
+6. A 200-employee filter applied to charts but not to the main download, despite
+   the site's description.
 
-**Fiscal years.** NYC fiscal years run July 1 to June 30, so FY2025 covers
-July 2024 through June 2025. The inflation adjustment uses the twelve-month
-average of the NY-area CPI for each fiscal year, not a single month's
-reading, and not the national index. NYC wages deflated by national
-inflation would understate what New Yorkers actually lost.
+The rewrite also moved from New York State to national SSA name records and added
+medians alongside means. These are method changes, not corrections to the six
+errors above.
 
-**Small groups are suppressed.** Any group with fewer than 30 people has its
-statistics withheld rather than published. A three-person agency could
-otherwise produce a 44% "gender gap" that is really one person's salary.
-Suppressed rows stay in the downloads with a `suppressed` flag, so a reader
-can tell "too small to report" apart from "not in the data".
+## Updates
 
-**Gender is inferred from first names,** matched against SSA birth
-registrations. This is a proxy for sex recorded at birth. It does not
-capture gender identity. It covers about 89% of employees, and coverage
-falls a little every year as the workforce diversifies. Every gender figure
-on the site carries this caveat next to it.
+The R pipeline in `run.R` builds the site data and public CSV files. Historical
+payroll years are cached; the newest year can be refreshed without downloading the
+full archive. The site has no scheduled rebuild. Check the fiscal year on a figure
+before using it.
 
-**"Uncommon names" measures something specific.** It asks whether an
-employee's first name appears in US birth records at least 25 times. This is
-a proxy for being born outside the US or to immigrant parents. It therefore
-reads on ethnicity and national origin, not on any neutral quality of a
-name. The FY2025 gap on this measure is 9.1%, larger than the gender gap. It
-is published because it is real, and labeled because it is easy to misread.
+## Tools
 
-**Hourly workers need care.** About half the "per Hour" roster is
-election-day poll workers carrying a $1.00 placeholder rate rather than a
-wage, and most hourly records show zero regular hours. The analysis excludes
-rates below $5 and above $500 as bookkeeping artifacts. The continuously
-employed subset is reported separately from the roster as a whole.
+Data pipeline: R, `data.table`, `dplyr`, `tidyr` and `jsonlite`. Site: HTML, CSS
+and JavaScript. Claude was used in development.
 
-**Tenure is time at the agency,** not time in public service. Someone who
-transferred between agencies reads as newer than they are. This means the
-compression and retirement figures understate real experience.
+## License and reuse
 
-**CEASED is not a resignation rate.** It counts people who left during the
-year without saying why. This mixes quits, retirements, layoffs, and deaths.
-
-### Corrections to the 2020 figures
-
-This site is a rewrite of the original 2020 script, which had errors that
-changed published numbers. Anyone who cited the old site should know:
-
-1. **The pay gap formula was wrong.** It used
-   `(male - female) / (male + female)`. The conventional measure is
-   `(male - female) / male`. Every gap figure previously published was
-   roughly half its true size. The citywide FY2021 figure of 1.1% should
-   have read about 2.2%.
-2. **The summary tables were computed from stale data.** Each table block
-   reused a grouped frame left over from the previous loop, instead of
-   rebuilding it. The `*_table.csv` outputs did not describe the year they
-   claimed to.
-3. **The uncommon-names chart computed the gender gap instead,** through a
-   copy-paste error, and wrote its result over the gender-gap file. There
-   was never a published uncommon-names chart.
-4. **Inflation used the national index, pinned to a single November
-   reading, for fiscal years ending June 30.**
-5. **The downloads were not machine-readable.** They shipped `"$67,980"` and
-   `"1.8%"` as text values instead of numbers.
-6. **The 200-employee filter was applied inconsistently:** to charts, but
-   not to the main download, contrary to what the site said.
-
-Two further changes are improvements, not fixes. Names are now matched
-against the SSA national file instead of the New York state file. This
-raises coverage from roughly two thirds to 89%, in a city where most
-employees were not born in New York. Medians are now reported alongside
-means, because salary distributions are right-skewed and the mean was
-flattering the data.
-
-## Tools used
-
-R, with `data.table`, `dplyr`, `tidyr`, and `jsonlite`. Claude for
-development.
-
-## Usage
-
-```bash
-Rscript run.R
-```
-
-The first run downloads about twelve years of payroll data into `data-raw/`
-and takes roughly twenty minutes. Historical fiscal years never change, so
-later runs fetch only the newest year and finish in under two minutes. Pass
-`--refresh` to force a full re-download.
-
-## Repository layout
-
-```
-R/00_config.R   every tunable in the project
-R/01_fetch.R    cached downloads
-R/02_prepare.R  cleaning, joins, deflators
-R/03_analyze.R  one function per theme
-R/04_export.R   site JSON and public CSV
-run.R           entry point
-docs/           the website, served by GitHub Pages
-docs/downloads/ machine-readable CSV
-```
-
-Thresholds, fiscal years, the base year for inflation, and the suppression
-floor all live in `R/00_config.R`. Change a number there and rerun; nothing
-elsewhere hardcodes a year or a cutoff.
-
-## License
-
-Code is released under the
-[BSD 3-Clause license](https://opensource.org/licenses/BSD-3-Clause). The
-compiled data is free to reuse with attribution. The underlying data is
-published by NYC Open Data, the Bureau of Labor Statistics, Zillow, and the
-Social Security Administration, and carries their terms. If you republish a
-figure, carry its fiscal year with it.
+Code is [BSD 3-Clause licensed](LICENSE). Compiled data can be reused with
+attribution; the City, BLS, Zillow and SSA data retain their own terms. Carry the
+fiscal year when republishing a figure.

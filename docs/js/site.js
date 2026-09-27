@@ -224,14 +224,10 @@
           'or produced by the <a href="https://www.nyc.gov/site/opa/index.page">' +
           'Office of Payroll Administration</a> or the City of New York. ' +
           'Please refer to them for authoritative information.</p>' +
-        '<p class="built-with">Public data, public method, built with R, ' +
-          'no tracking, no accounts, ' +
-          '<span class="wink" title="Fiscal years run July to June, which is the single most common way to get these numbers wrong.">' +
-          'and strong opinions about fiscal years</span>.</p>' +
         // The portfolio mark, below everything and outside the columns. It is
         // a filing cabinet, not a section of this site, so it is announced
         // once at the foot rather than filed among the site's own pages.
-        '<p class="portfolio">A <a href="https://publicworks.nyc">publicworks.nyc</a> project</p>' +
+        '<p class="portfolio">A <a href="https://publicworks.nyc/">publicworks.nyc</a> project.</p>' +
         '</div>';
     }
   }
