@@ -173,7 +173,7 @@
       if (NOTES[state.metric]) {
         note.hidden = false;
         note.innerHTML = '<p>' + NOTES[state.metric] +
-          ' <a href="method.html">Method</a>.</p>';
+          ' See <a href="data.html">Data</a>.</p>';
       } else {
         note.hidden = true;
       }

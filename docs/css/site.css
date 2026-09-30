@@ -653,6 +653,44 @@ code {
 .portfolio a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
 .portfolio a:hover { color: var(--accent); text-decoration: underline; }
 
+/* ---- Data page ------------------------------------------------------
+   Downloads, the columns disclosure and the process list. The same three
+   blocks appear on every Public Works Data page; see alignment.md. */
+.downloads {
+  display: grid; gap: 1rem; margin: 1rem 0; padding: 0; list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.download {
+  display: block; height: 100%; background: var(--paper-raised);
+  border: 1px solid var(--rule); border-radius: 10px; padding: 1rem 1.2rem;
+  text-decoration: none; color: inherit;
+  box-shadow: var(--shadow-tight);
+  transition: border-color .15s ease;
+}
+.download:hover { border-color: var(--accent); }
+.download h3 { margin: 0 0 .25rem; font-size: 1.02rem; }
+.download p { margin: 0; font-size: .89rem; color: var(--ink-soft); max-width: none; }
+.columns { margin: 1rem 0 1.5rem; }
+.columns > summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+.columns[open] > summary { margin-bottom: .75rem; }
+.data-note { font-size: .85rem; color: var(--ink-faint); margin-top: .75rem; }
+
+.process { list-style: none; margin: 1rem 0 0; padding: 0; counter-reset: step; max-width: var(--measure); }
+.process > li { position: relative; counter-increment: step; padding: 0 0 1.25rem 2.6rem; }
+.process > li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--paper);
+  font-size: .8rem; font-weight: 700;
+}
+.process > li:not(:last-child)::after {
+  content: ""; position: absolute; left: .8rem; top: 1.9rem; bottom: .25rem;
+  border-left: 2px solid var(--rule-strong);
+}
+.process h3 { margin: 0 0 .2rem; font-size: 1rem; }
+.process p { margin: 0; color: var(--ink-soft); }
+
 @media print {
   .masthead, .nav, .theme-toggle, .table-tools { display: none; }
   body { background: #fff; color: #000; }

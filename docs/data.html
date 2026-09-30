@@ -4,16 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Data — The Pay Gap</title>
-<meta name="robots" content="noindex">
-<!-- The data page and the method page said the same things twice: what a
-     source publishes, what a suppressed row means, what a dollar is adjusted
-     to. They are one page now. This stub stays because links to the downloads
-     are already out in the world. -->
-<link rel="canonical" href="method.html">
-<meta http-equiv="refresh" content="0; url=method.html#downloads">
+<meta name="description" content="Download the files behind The Pay Gap and see how they are made.">
 <link rel="stylesheet" href="css/site.css">
 <script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <script src="js/site.js" defer></script>
+<script src="js/table.js" defer></script>
+<script src="js/data.js" defer></script>
+<style>
+  /* .wrap.prose holds its children to the reading measure. A table is not
+     prose and needs the full column. */
+  .wrap.prose > #file-table,
+  .wrap.prose > #source-table,
+  .wrap.prose > .columns { max-width: none; }
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -21,14 +24,157 @@
 
 <main id="main">
   <section class="wrap console">
-    <h1 class="console-h1">This page has moved</h1>
+    <h1 class="console-h1">Data</h1>
     <p class="console-sub">
-      The downloads, the data dictionary, and the build instructions are now part
-      of <a href="method.html#downloads">method</a>.
+      The files behind this site and how they are made.
     </p>
-    <div class="table-tools">
-      <a class="pill" href="method.html#downloads">Go to the downloads</a>
+    <p class="statusline mono" data-status></p>
+  </section>
+
+  <section class="wrap prose">
+    <h2 id="downloads">Downloads</h2>
+    <div class="downloads">
+      <a class="download" href="downloads/salary_by_title.csv" download>
+        <h3>Salary by title</h3>
+        <p>Median, mean and percentiles for every title and year.</p>
+      </a>
+      <a class="download" href="downloads/real_wages_by_title.csv" download>
+        <h3>Real wages by title</h3>
+        <p>Nominal and inflation-adjusted pay, with prices and rent alongside.</p>
+      </a>
+      <a class="download" href="downloads/gender_gap_by_title.csv" download>
+        <h3>Gender gap by title</h3>
+        <p>Estimated pay by sex proxy, with the gap in percent and dollars.</p>
+      </a>
     </div>
+
+    <details class="columns">
+      <summary>Columns</summary>
+      <p>
+        An empty value is never a zero. It means this site does not have the
+        value. Each file has an <code>n</code> column with the number of people
+        in the group. It also has a <code>suppressed</code> column, which is TRUE
+        when the group has fewer than 30 people. A suppressed row keeps its name
+        and headcount but has empty statistics, so you can tell "too small to
+        report" from "not in the data".
+      </p>
+      <p>
+        A column name that starts with <code>real_</code> is adjusted for
+        inflation to the most recent fiscal year. A plain salary column is in the
+        dollars of its own year. The table is also available as
+        <a href="downloads/data_dictionary.csv">data_dictionary.csv</a>.
+      </p>
+      <div id="dict-table"></div>
+    </details>
+
+    <p>
+      Every file is plain CSV, with real numbers and not formatted text, so it
+      opens in a spreadsheet or a script without more work.
+    </p>
+    <div id="file-table"></div>
+    <p class="data-note">
+      Free to reuse with attribution. Credit NYC Open Data for the payroll and
+      carry the fiscal year when republishing a figure.
+    </p>
+
+    <h2 id="sources">Sources</h2>
+    <div id="source-table"></div>
+
+    <h2 id="process">Process</h2>
+    <p>Each update runs seven steps.</p>
+    <ol class="process">
+      <li>
+        <h3>Collect</h3>
+        <p>
+          The pipeline downloads the City's payroll and the New York area price
+          and rent series from the Bureau of Labor Statistics. It also reads
+          Zillow's rent index and the Social Security Administration's baby name
+          records. The site collects no new data. Every statistic is calculated
+          from these published records.
+        </p>
+      </li>
+      <li>
+        <h3>Match</h3>
+        <p>
+          The payroll does not record gender, so the site estimates it from first
+          names. Each name is compared with Social Security birth records from
+          1880 and given a weight, the share of that name that is male or
+          female. A name with fewer than 25 birth records is not used, because
+          too few records give false certainty.
+        </p>
+      </li>
+      <li>
+        <h3>Check</h3>
+        <p>
+          Salary figures include each employee with an annual salary and an
+          active leave status on June 30. Hourly and day-rate workers are
+          calculated separately, because a rate and a salary are different
+          quantities and an average of the two has no meaning. A group with
+          fewer than 30 people has empty statistics, because in a group of three
+          one salary controls the result.
+        </p>
+      </li>
+      <li>
+        <h3>Adjust</h3>
+        <p>
+          A City fiscal year runs from July 1 to June 30, so fiscal year 2025 is
+          July 2024 to June 2025. Pay is adjusted with the average consumer price
+          index for the 12 months of each fiscal year, not the index for one
+          month. Prices use BLS series CUURS12ASA0, all urban consumers in the
+          New York-Newark-Jersey City area. A national index is too low for New
+          York, so the site does not use one.
+        </p>
+      </li>
+      <li>
+        <h3>Compare rent</h3>
+        <p>
+          Rent uses BLS series CUURS12ASEHA, rent of a primary residence. The
+          site also shows the Zillow rent index in dollars. The
+          <a href="citywide.html#pay">citywide page</a> gives the difference
+          between the two measures.
+        </p>
+      </li>
+      <li>
+        <h3>Summarize</h3>
+        <p>
+          Salary distributions are not symmetrical. A few high salaries pull the
+          mean above the pay of a typical employee, so the site shows the median
+          first and also gives the mean. Above 30 people, you set the minimum
+          group size on the <a href="compare.html">compare</a> page. The right
+          minimum differs for each question.
+        </p>
+      </li>
+      <li>
+        <h3>Publish</h3>
+        <p>
+          One export writes the data the site reads and the CSV files above.
+        </p>
+      </li>
+    </ol>
+
+    <h2 id="limits">Limits</h2>
+    <ul>
+      <li>The name proxy estimates the sex in a birth record. It cannot identify
+        a transgender or non-binary person, and it is not reliable for one
+        person.</li>
+      <li>About one employee in ten has no usable name match. The match covers
+        about 89 percent of the workforce, and that share falls each year as the
+        workforce becomes more diverse.</li>
+      <li>The payroll does not record race or ethnicity. The name origin
+        comparison is a weak proxy for national origin. Read it as one.</li>
+      <li>Tenure is the time at the current agency, not total public service. An
+        employee who moved between agencies looks more recent than they are, so
+        the compression and tenure figures run low.</li>
+      <li>The CEASED status includes a resignation, a retirement, the end of
+        seasonal work, a layoff and a death. It cannot show why a person
+        left.</li>
+      <li>The records give overtime hours and dollars. Required overtime and
+        voluntary overtime look the same.</li>
+      <li>Each figure is gross pay, before tax, pension and health
+        contributions. It is not take-home pay.</li>
+      <li>This site measures what the City pays. It does not measure what the
+        work is worth, and no dataset answers that question.</li>
+    </ul>
   </section>
 </main>
 

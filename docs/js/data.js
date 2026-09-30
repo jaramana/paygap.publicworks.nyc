@@ -48,6 +48,25 @@
     ]
   });
 
+  PGTable.render('#source-table', {
+    rows: [
+      { name: 'NYC Citywide Payroll Data (Fiscal Year)', url: 'https://data.cityofnewyork.us/d/k397-673e', publisher: 'NYC Open Data', use: 'Pay, titles, agencies and employment records' },
+      { name: 'Consumer Price Index, New York area', url: 'https://www.bls.gov/cpi/', publisher: 'Bureau of Labor Statistics', use: 'Inflation-adjusted pay (CUURS12ASA0)' },
+      { name: 'Rent index, New York area', url: 'https://www.bls.gov/cpi/', publisher: 'Bureau of Labor Statistics', use: 'Rent growth (CUURS12ASEHA)' },
+      { name: 'Zillow Observed Rent Index, New York metro', url: 'https://www.zillow.com/research/data/', publisher: 'Zillow', use: 'Rent in dollars' },
+      { name: 'Popular Baby Names', url: 'https://www.ssa.gov/oact/babynames/limits.html', publisher: 'Social Security Administration', use: 'First-name comparisons' }
+    ],
+    search: false,
+    sortKey: null,
+    columns: [
+      { key: 'name', label: 'Source', name: true, sortable: false,
+        render: function (v, r) { return '<a href="' + r.url + '">' + v + '</a>'; } },
+      { key: 'publisher', label: 'Publisher', sortable: false },
+      { key: 'use', label: 'Used for', sortable: false,
+        render: function (v) { return '<span class="muted">' + v + '</span>'; } }
+    ]
+  });
+
   // The dictionary is generated in R, so it never drifts from the data.
   fetch('downloads/data_dictionary.csv')
     .then(function (r) { return r.text(); })

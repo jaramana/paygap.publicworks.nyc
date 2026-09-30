@@ -164,7 +164,7 @@
     { href: 'lookup.html',   nav: 'Look up' },
     { href: 'compare.html',  nav: 'Compare' },
     { href: 'citywide.html', nav: 'Citywide' },
-    { href: 'method.html',   nav: 'Method' },
+    { href: 'data.html',     nav: 'Data' },
     { href: 'about.html',    nav: 'About' }
   ];
 
@@ -198,10 +198,10 @@
             '<li><a href="compare.html">Compare</a></li>' +
             '<li><a href="citywide.html">Citywide</a></li>' +
           '</ul></div>' +
-          // Pages, not sections. Three entries that all opened method.html at
+          // Pages, not sections. Three entries that all opened one page at
           // a different anchor read as three destinations and were one.
           '<div><h4>Reference</h4><ul>' +
-            '<li><a href="method.html">Method</a></li>' +
+            '<li><a href="data.html">Data</a></li>' +
             '<li><a href="about.html">About</a></li>' +
           '</ul></div>' +
           '<div><h4>Sources</h4><ul>' +

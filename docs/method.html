@@ -4,22 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Method — The Pay Gap</title>
-<meta name="description" content="Where these numbers come from, how this site calculates them, what it cannot show, and how to download and rebuild the data.">
+<meta name="robots" content="noindex">
+<!-- Method and Data were the same page in practice. It is called Data now.
+     This stub stays because links to method.html and its anchors are already
+     out in the world. -->
+<link rel="canonical" href="data.html">
+<noscript><meta http-equiv="refresh" content="0; url=data.html"></noscript>
+<script>
+  (function () {
+    var moved = {
+      '#scope': '#process', '#calculation': '#process',
+      '#absences': '#downloads', '#dictionary': '#downloads',
+      '#build': '#downloads', '#reuse': '#downloads'
+    };
+    var h = location.hash;
+    location.replace('data.html' + (moved[h] || h));
+  })();
+</script>
 <link rel="stylesheet" href="css/site.css">
 <script>try{var t=localStorage.getItem('paygap-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <script src="js/site.js" defer></script>
-<script src="js/table.js" defer></script>
-<script src="js/data.js" defer></script>
-<style>
-  .prose h2 { margin-top: 2.75rem; }
-  .prose h3 { margin-top: 1.75rem; font-size: 1rem; }
-  .prose li { margin-bottom: .5rem; }
-  .prose ul, .prose ol { max-width: var(--measure); }
-  /* .wrap.prose holds its children to the reading measure. A table is not
-     prose and needs the full column. */
-  .wrap.prose > #file-table,
-  .wrap.prose > #dict-table { max-width: none; }
-</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -27,202 +31,9 @@
 
 <main id="main">
   <section class="wrap console">
-    <h1 class="console-h1">Method</h1>
+    <h1 class="console-h1">This page has moved</h1>
     <p class="console-sub">
-      This page tells you where each figure comes from, how this site calculates it, what it cannot show, and how to get the data.
-    </p>
-    <p class="statusline mono" data-status></p>
-  </section>
-
-  <section class="wrap prose">
-    <h2 id="scope">Scope</h2>
-    <p>
-      This site shows the payroll records of the City of New York. It gives pay,
-      overtime, and tenure for each civil service title and each agency.
-    </p>
-    <p>
-      The City publishes these records. This site does not collect new data. It
-      calculates statistics from the published records.
-    </p>
-
-    <h2 id="sources">Sources</h2>
-    <ul>
-      <li><a href="https://data.cityofnewyork.us/d/k397-673e">NYC Citywide Payroll Data (Fiscal Year)</a>, NYC Open Data</li>
-      <li><a href="https://www.bls.gov/cpi/">Consumer Price Index</a>, US Bureau of Labor Statistics, New York area series</li>
-      <li><a href="https://www.zillow.com/research/data/">Zillow Observed Rent Index</a>, New York metro</li>
-      <li><a href="https://www.ssa.gov/oact/babynames/limits.html">Popular Baby Names</a>, Social Security Administration</li>
-      <li><a href="https://opendata.cityofnewyork.us/open-data-law/">Local Law 11 of 2012</a>, the NYC Open Data Law</li>
-      <li><a href="https://www.archives.gov/milestone-documents/pendleton-act">Pendleton Civil Service Reform Act, 1883</a>, US National Archives</li>
-    </ul>
-
-    <h2 id="calculation">Calculation</h2>
-
-    <h3>Fiscal years</h3>
-    <p>
-      A City fiscal year starts on July 1 and ends on June 30. Fiscal year 2025
-      is July 2024 to June 2025.
-    </p>
-    <p>
-      This site adjusts for inflation with the average consumer price index for
-      the 12 months of each fiscal year. It does not use the index for one month.
-    </p>
-
-    <h3>Prices and rent</h3>
-    <p>
-      For prices, this site uses series CUURS12ASA0 from the Bureau of Labor
-      Statistics. That series covers all urban consumers in the
-      New York-Newark-Jersey City area.
-    </p>
-    <p>
-      For rent, it uses series CUURS12ASEHA. That series covers rent of a primary
-      residence.
-    </p>
-    <p>
-      A national index is too low for New York. Thus this site does not use one.
-      It also shows the Zillow rent index in dollars. The
-      <a href="citywide.html#pay">citywide page</a> gives the difference between
-      the two measures.
-    </p>
-
-    <h3>Who is counted</h3>
-    <p>
-      Salary figures include each employee with an annual salary and an active
-      leave status on June 30.
-    </p>
-    <p>
-      This site calculates hourly workers and day-rate workers separately. A rate
-      and a salary are different quantities. An average of the two quantities has
-      no meaning.
-    </p>
-
-    <h3>Medians and means</h3>
-    <p>
-      Salary distributions are not symmetrical. A small number of high salaries
-      pulls the mean up. Thus the mean is higher than the pay of a typical
-      employee.
-    </p>
-    <p>
-      This site shows the median first. It also gives the mean.
-    </p>
-
-    <h3>Small groups</h3>
-    <p>
-      If a group has less than 30 persons, this site does not show its
-      statistics. In a group of three persons, one salary controls the result.
-    </p>
-    <p>
-      Above 30 persons, you set the minimum group size. It is a control on the
-      <a href="compare.html">compare</a> page. The correct minimum is different
-      for each question.
-    </p>
-
-    <h3>Gender</h3>
-    <p>
-      The payroll does not record gender. This site estimates gender from first
-      names.
-    </p>
-    <p>
-      It compares each first name with the birth records of the Social Security
-      Administration from 1880. It then gives each person a weight. The weight is
-      the proportion of that name that is male or female.
-    </p>
-    <p>
-      If a name has less than 25 birth records, this site does not use it. Too
-      few records give a false certainty.
-    </p>
-
-    <h2 id="absences">Absences</h2>
-    <p>
-      An empty value is not a zero. It shows that this site does not have the
-      value.
-    </p>
-    <p>
-      Each file has an <code>n</code> column. That column gives the number of
-      persons in the group.
-    </p>
-    <p>
-      Each file also has a <code>suppressed</code> column. That column is TRUE if
-      the group has less than 30 persons. A suppressed row keeps its name and its
-      headcount, but its statistics are empty. Thus you can tell the difference
-      between "too small to report" and "not in the data".
-    </p>
-    <p>
-      A column name that starts with <code>real_</code> is adjusted for
-      inflation to the most recent fiscal year. A plain salary column is in the
-      dollars of its own year.
-    </p>
-
-    <h2 id="limits">Limits</h2>
-    <p>This site cannot show you these things.</p>
-    <ul>
-      <li><strong>Gender identity.</strong> The name proxy estimates the sex in
-        the birth record. It cannot identify a transgender or non-binary person.
-        It is not reliable for one person.</li>
-      <li><strong>About one employee in ten.</strong> The name match covers about
-        89 percent of the workforce. That share becomes smaller each year as the
-        workforce becomes more diverse.</li>
-      <li><strong>Race and ethnicity.</strong> The payroll does not record them.
-        The name origin comparison is a weak proxy for national origin. Read it
-        as one.</li>
-      <li><strong>Total public service.</strong> Tenure is the time at the
-        current agency. An employee who moved between agencies looks more recent
-        than that employee is. Thus the compression figures and the tenure
-        figures are low.</li>
-      <li><strong>The reason a person left.</strong> The CEASED status includes a
-        resignation, a retirement, the end of seasonal work, a layoff, and a
-        death.</li>
-      <li><strong>The reason for overtime.</strong> The records give hours and
-        dollars. Required overtime and voluntary overtime look the same.</li>
-      <li><strong>Take-home pay.</strong> Each figure is gross pay, before tax,
-        pension, and health contributions.</li>
-      <li><strong>Fair pay.</strong> This site measures what the City pays. It
-        does not measure what the work is worth. No dataset answers that
-        question.</li>
-    </ul>
-
-    <h2 id="downloads">Downloads</h2>
-    <p>
-      Each file is plain CSV. The files hold real numbers, not formatted text.
-      Thus they open in a spreadsheet or a script without more work.
-    </p>
-    <div id="file-table"></div>
-
-    <h2 id="dictionary">Dictionary</h2>
-    <p>
-      This table gives the meaning of each shared column. It is also available as
-      <a href="downloads/data_dictionary.csv">data_dictionary.csv</a>.
-    </p>
-    <div id="dict-table"></div>
-
-    <h2 id="build">Build</h2>
-    <p>
-      The pipeline is five R scripts and one entry point. Clone the repository,
-      then run this command:
-    </p>
-    <pre class="code-block"><code>Rscript run.R</code></pre>
-    <p>
-      The first run downloads about 12 years of payroll data. It takes about 20
-      minutes. After the first run, the pipeline downloads only the most recent
-      fiscal year.
-    </p>
-    <p>
-      The file <code>R/00_config.R</code> holds each threshold, the base year for
-      inflation, and the suppression floor. Change a value in that file, then
-      build the site again.
-    </p>
-
-    <h2 id="reuse">Reuse</h2>
-    <p>
-      The <a href="https://github.com/jaramana/paygap.publicworks.nyc">source code
-      is on GitHub</a> with a BSD 3-Clause license. The data is free to use, but
-      you must give attribution. You do not need permission. Give credit to
-      <a href="https://data.cityofnewyork.us/d/k397-673e">NYC Open Data</a> for
-      the payroll.
-    </p>
-    <p>
-      If you find an error,
-      <a href="https://github.com/jaramana/paygap.publicworks.nyc/issues">open an
-      issue</a>.
+      Method is now <a href="data.html">Data</a>.
     </p>
   </section>
 </main>

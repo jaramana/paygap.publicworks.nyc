@@ -36,8 +36,8 @@ averages; FY2025 runs from July 2024 through June 2025.
   artifacts. Agency tenure is not total public-service tenure. `CEASED` records a
   departure, not its cause.
 
-The [method page](https://paygap.publicworks.nyc/method.html) explains the
-calculations and download fields.
+The [Data page](https://paygap.publicworks.nyc/data.html) lists the downloads,
+sources and process.
 
 ## Corrections to earlier figures
 
@@ -63,10 +63,18 @@ errors above.
 
 ## Updates
 
-The R pipeline in `run.R` builds the site data and public CSV files. Historical
-payroll years are cached; the newest year can be refreshed without downloading the
-full archive. The site has no scheduled rebuild. Check the fiscal year on a figure
-before using it.
+The R pipeline builds the site data and public CSV files. The site has no
+scheduled rebuild, so check the fiscal year on a figure before using it.
+
+```sh
+Rscript run.R
+```
+
+The first run downloads about 12 years of payroll data and takes about 20
+minutes. Later runs download only the most recent fiscal year. `R/00_config.R`
+holds each threshold, the inflation base year and the suppression floor; change a
+value there and run the pipeline again. The five scripts in `R/` run in order from
+`run.R`.
 
 ## Tools
 
