@@ -67,6 +67,11 @@
     ]
   });
 
+  // The build date comes from the pipeline's own metadata.
+  PG.load('citywide.json').then(function (d) {
+    document.getElementById('built').textContent = 'Data built ' + PG.fmt.date(d.meta.generated) + '.';
+  }).catch(function () {});
+
   // The dictionary is generated in R, so it never drifts from the data.
   fetch('downloads/data_dictionary.csv')
     .then(function (r) { return r.text(); })

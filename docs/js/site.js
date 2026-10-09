@@ -19,6 +19,12 @@
         maximumFractionDigits: o.cents ? 2 : 0
       });
     },
+    // 2026-07-29 as 29 July 2026.
+    date: function (iso) {
+      return new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+      }).format(new Date(iso + 'T00:00:00Z'));
+    },
     rate: function (n) {
       if (n === null || n === undefined || isNaN(n)) return '—';
       return '$' + n.toFixed(2);
@@ -192,7 +198,7 @@
       foot.className = 'footer';
       foot.innerHTML =
         '<div class="wrap"><div class="footer-grid">' +
-          '<div><h4>Views</h4><ul>' +
+          '<div><h2 class="footer-head">Views</h2><ul>' +
             '<li><a href="lookup.html">Look up a title</a></li>' +
             '<li><a href="lookup.html?scope=agency">Look up an agency</a></li>' +
             '<li><a href="compare.html">Compare</a></li>' +
@@ -200,18 +206,18 @@
           '</ul></div>' +
           // Pages, not sections. Three entries that all opened one page at
           // a different anchor read as three destinations and were one.
-          '<div><h4>Reference</h4><ul>' +
+          '<div><h2 class="footer-head">Reference</h2><ul>' +
             '<li><a href="data.html">Data</a></li>' +
             '<li><a href="about.html">About</a></li>' +
           '</ul></div>' +
-          '<div><h4>Sources</h4><ul>' +
+          '<div><h2 class="footer-head">Sources</h2><ul>' +
             '<li><a href="https://data.cityofnewyork.us/d/k397-673e">NYC Citywide Payroll</a></li>' +
             '<li><a href="https://www.bls.gov/regions/new-york-new-jersey/">BLS New York region</a></li>' +
             '<li><a href="https://www.zillow.com/research/data/">Zillow rent index</a></li>' +
             '<li><a href="https://www.ssa.gov/oact/babynames/">SSA baby names</a></li>' +
           '</ul></div>' +
           // Code, not pages. About lives in Reference and was listed twice.
-          '<div><h4>Project</h4><ul>' +
+          '<div><h2 class="footer-head">Project</h2><ul>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc">Source on GitHub</a></li>' +
             '<li><a href="https://github.com/jaramana/paygap.publicworks.nyc/issues">Report an error</a></li>' +
           '</ul></div>' +

@@ -13,7 +13,7 @@
       var dd = PG.el('dd', { text: String(t.value) });
       if (t.cls) dd.classList.add(t.cls);
       w.appendChild(dd);
-      if (t.note) w.appendChild(PG.el('div', { class: 'note', text: t.note }));
+      if (t.note) w.appendChild(PG.el('dd', { class: 'note', text: t.note }));
       dl.appendChild(w);
     });
   }
@@ -230,5 +230,13 @@
       y0.fiscal_year + ' and FY' + y1.fiscal_year + '.' +
       '<span class="qual">The hourly line tracks the election calendar as much as ' +
       'hiring, because poll workers appear on the payroll in election years.</span>';
-  }).catch(function (e) { PG.fail(document.getElementById('cw-stats'), e); });
+  }).catch(function (e) { PG.fail(document.getElementById('cw-stats'), e); })
+    .then(function () {
+      document.getElementById('main').classList.remove('is-loading');
+
+      // The sections were hidden when the browser looked for the anchor, so
+      // land on it now that they show.
+      var target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) target.scrollIntoView();
+    });
 })();

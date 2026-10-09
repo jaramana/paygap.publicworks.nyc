@@ -440,7 +440,7 @@ main { padding-bottom: 5rem; }
   margin: 0; font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
 }
-.stat .note { font-size: .8rem; color: var(--ink-faint); font-weight: 400; letter-spacing: 0; }
+.stat .note { font-size: .8rem; color: var(--ink-faint); font-weight: 400; letter-spacing: 0; line-height: inherit; }
 .stat dd.up   { color: var(--good); }
 .stat dd.down { color: var(--warn); }
 
@@ -508,6 +508,9 @@ tbody tr + tr td { border-top: 1px solid var(--rule); }
 tbody tr:hover td { background: var(--paper-sunken); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 td.name { white-space: normal; min-width: 15rem; }
+/* WCAG 2.5.8 asks for 24 by 24 pixels. This grows the hit area of a link
+   alone in a cell, not its type. */
+#file-table td a, #source-table td a { display: inline-block; padding-block: .25rem; }
 
 th.sortable { cursor: pointer; user-select: none; }
 th.sortable:hover { color: var(--ink); }
@@ -633,9 +636,10 @@ code {
   display: grid; gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
-.footer h4 {
+/* Column titles are h2 for the outline and look like small labels. */
+.footer .footer-head {
   font-size: .75rem; text-transform: uppercase; letter-spacing: .09em;
-  color: var(--ink-faint); margin: 0 0 .5rem;
+  color: var(--ink-faint); margin: 0 0 .5rem; line-height: 1.6;
 }
 .footer ul { list-style: none; padding: 0; margin: 0; }
 .footer li { margin-bottom: .25rem; }
@@ -690,6 +694,29 @@ code {
 }
 .process h3 { margin: 0 0 .2rem; font-size: 1rem; }
 .process p { margin: 0; color: var(--ink-soft); }
+
+/* ---- Stable first paint ---------------------------------------- */
+/* Containers that script fills keep their filled height from the first
+   paint, so the text under them does not jump when they fill. The heights
+   are what each one measures once filled. The footer starts below the fold,
+   so a short page filling in does not shove it either. */
+@media screen { main { min-height: calc(100vh - var(--masthead-h)); } }
+/* The masthead is drawn by script. Until it is, its slot holds the height
+   it will have at that width: one row, or the nav wrapping to two or three. */
+header[data-chrome="masthead"]:empty { display: block; min-height: 52.83px; }
+@media (max-width: 35.7rem) { header[data-chrome="masthead"]:empty { min-height: 104.83px; } }
+@media (max-width: 27.6rem) { header[data-chrome="masthead"]:empty { min-height: 132.41px; } }
+@media (max-width: 24.55rem) { header[data-chrome="masthead"]:empty { min-height: 141.45px; } }
+.statusline[data-status]:empty { min-height: 20.47px; }
+@media (max-width: 40.85rem) { .statusline[data-status]:empty { min-height: 40.94px; } }
+@media (max-width: 22.4rem) { .statusline[data-status]:empty { min-height: 61.41px; } }
+#home-search:empty { min-height: 91.84px; }
+#file-table:empty { min-height: 1049.53px; }
+#c-blurb:empty { min-height: 22.52px; }
+@media (max-width: 31.05rem) { #c-blurb:empty { min-height: 45.03px; } }
+/* A page whose body is all data shows its head at once and the rest when the
+   data has drawn. */
+main.is-loading > section:not(:first-of-type) { display: none; }
 
 @media print {
   .masthead, .nav, .theme-toggle, .table-tools { display: none; }

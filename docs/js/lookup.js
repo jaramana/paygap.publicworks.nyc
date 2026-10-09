@@ -23,7 +23,7 @@
     var dd = PG.el('dd', { text: value });
     if (cls) dd.classList.add(cls);
     w.appendChild(dd);
-    if (note) w.appendChild(PG.el('div', { class: 'note', text: note }));
+    if (note) w.appendChild(PG.el('dd', { class: 'note', text: note }));
     dl.appendChild(w);
   }
 

@@ -20,6 +20,13 @@
 <header data-chrome="masthead"></header>
 
 <main id="main">
+<noscript>
+  <div class="wrap"><div class="note-box"><p>
+    <strong>This page needs JavaScript.</strong> It draws each figure from the
+    published data in the browser. The <a href="data.html">Data page</a> has
+    every source and the full download.
+  </p></div></div>
+</noscript>
   <section class="wrap console">
     <div class="search-shell" id="lookup-search"></div>
     <p class="statusline mono" data-status></p>
@@ -28,7 +35,7 @@
   <section class="wrap" id="entity" hidden>
     <div class="entity-head">
       <p class="kind mono" id="e-kind"></p>
-      <h1 id="e-name"></h1>
+      <h1 id="e-name">Title</h1>
       <p class="mono statusline" id="e-sub"></p>
     </div>
 
@@ -78,7 +85,7 @@
       </figure>
     </div>
 
-    <h2 class="section-label" id="e-break-label"></h2>
+    <h2 class="section-label" id="e-break-label">Breakdown</h2>
     <div id="e-breakdown"></div>
 
     <div class="note-box">
@@ -93,7 +100,7 @@
   </section>
 
   <section class="wrap" id="browse">
-    <h2 class="section-label">All titles</h2>
+    <h1 class="section-label">All titles</h1>
     <div id="browse-table"></div>
   </section>
 </main>
