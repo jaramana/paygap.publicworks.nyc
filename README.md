@@ -76,6 +76,14 @@ holds each threshold, the inflation base year and the suppression floor; change 
 value there and run the pipeline again. The five scripts in `R/` run in order from
 `run.R`.
 
+To preview the site, which is all of `docs/` with no build step:
+
+```sh
+python3 -m http.server 8786 --directory docs
+```
+
+Open http://localhost:8786.
+
 ## Tools
 
 Data pipeline: R joins payroll records, adjusts dollar amounts and aggregates

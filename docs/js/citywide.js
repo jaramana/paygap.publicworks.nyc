@@ -139,24 +139,24 @@
       '.' + '<span class="qual">Name matching covered ' + f.pct(cov.coverage, 0) +
       ' of employees.</span>';
 
-    // ---- Name origin ---------------------------------------------
+    // ---- Uncommon first names ------------------------------------
     PGCharts.lineChart('#n-chart', d.name_origin, {
       series: [
-        { key: 'common_mean', label: 'Name in US birth records' },
-        { key: 'uncommon_mean', label: 'Name not in US birth records', color: 'var(--series-2)' }
+        { key: 'common_mean', label: 'Common first names' },
+        { key: 'uncommon_mean', label: 'Uncommon first names', color: 'var(--series-2)' }
       ],
       yFormat: function (v) { return '$' + Math.round(v / 1000) + 'k'; },
       xFormat: function (v) { return "'" + String(v).slice(2); },
-      height: 300, ariaLabel: 'Mean salary by whether a name appears in US birth records'
+      height: 300, ariaLabel: 'Mean salary for common and uncommon first names'
     });
     var n1 = d.name_origin[d.name_origin.length - 1];
     document.getElementById('n-cap').innerHTML =
       'FY' + n1.fiscal_year + ': a gap of <strong>' + f.pct(n1.gap) + '</strong>, or ' +
       f.dollars(n1.gap_dollars) + ' a year, affecting ' + f.pct(n1.uncommon_share, 0) +
       ' of employees, and larger than the gender gap on the same payroll.' +
-      '<span class="qual">A name counts as present if it appears at least 25 times ' +
-      'in SSA records since 1880. This is a proxy for national origin, not a ' +
-      'neutral category.</span>';
+      '<span class="qual">A name counts as common if it appears at least 25 times ' +
+      'in SSA records since 1880. The grouping does not establish birthplace, ' +
+      'ethnicity or national origin.</span>';
 
     // ---- Hourly ---------------------------------------------------
     var h = d.hourly, hl = h[h.length - 1], hf = h[0];

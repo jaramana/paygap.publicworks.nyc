@@ -91,7 +91,11 @@
     // Relative so the site works at a subpath (jaramana.github.io/paygap.publicworks.nyc)
     // as readily as at a bare domain.
     cache[path] = fetch('data/' + path).then(function (r) {
-      if (!r.ok) throw new Error('Could not load ' + path + ' (' + r.status + ')');
+      if (!r.ok) {
+        var err = new Error('Could not load ' + path + ' (' + r.status + ')');
+        err.status = r.status;
+        throw err;
+      }
       return r.json();
     });
     return cache[path];

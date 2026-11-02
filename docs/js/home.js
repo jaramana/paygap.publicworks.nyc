@@ -32,11 +32,6 @@
       note: 'titles where a new hire out-earns a ten-year colleague',
       href: 'compare.html?metric=compression&scope=title&min=30' },
 
-    { tag: 'citywide', entity: 'The gender gap',
-      value: function (d) { return d.betweenShare; },
-      note: 'of it is which jobs people hold, not unequal pay within a job',
-      href: 'citywide.html#gender' },
-
     { tag: 'citywide', entity: 'Hourly workers',
       value: function (d) { return d.crossingGuard; },
       note: function (d) { return 'an hour for a ' + d.crossingGuardName +

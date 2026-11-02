@@ -70,7 +70,7 @@
     normalizeState();
     var m = meta();
     syncControls();
-    document.title = m.label + ' — The Pay Gap';
+    document.title = m.label + ' · The Pay Gap';
 
     PG.load('rank/' + state.metric + '-' + state.scope + '.json').then(function (all) {
       var rows = all.filter(function (r) {
@@ -152,9 +152,9 @@
           'Security birth registrations. It estimates sex recorded at birth, ' +
           'cannot see non-binary people, and misses about one employee in ten. ' +
           'It says nothing about any individual.',
-        'name-origin': 'Whether a first name appears in US birth records is ' +
-          'largely a function of where someone or their parents were born. ' +
-          'This is a proxy for national origin, not a neutral category.',
+        'name-origin': 'An uncommon name has fewer than 25 Social Security ' +
+          'birth registrations since 1880. The grouping does not establish ' +
+          'anyone’s birthplace, ethnicity or national origin.',
         compression: 'Tenure is time at the current agency, not total public ' +
           'service, so anyone who transferred in counts as a new hire. That ' +
           'makes these figures conservative where transfers are common.',

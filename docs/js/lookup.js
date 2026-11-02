@@ -35,14 +35,37 @@
     PG.setParam(scope, slug, replace);
     PG.load((scope === 'agency' ? 'agencies/' : 'titles/') + slug + '.json')
       .then(render)
-      .catch(function (e) { entity.hidden = false; PG.fail(entity, e); });
+      .catch(function (e) {
+        if (e.status === 404) return notFound(scope, slug);
+        entity.hidden = false;
+        PG.fail(entity, e);
+      });
+  }
+
+  // A link to a title or agency that is not in the data. The message sits
+  // outside #entity so a later search can still render into it, and the
+  // browse list below stays open.
+  function notFound(scope, slug) {
+    var kind = scope === 'agency' ? 'agency' : 'title';
+    clearNotFound();
+    entity.hidden = true;
+    var box = PG.el('div', { id: 'not-found', class: 'wrap note-box caution', role: 'alert' }, [
+      PG.el('p', { text: 'No ' + kind + ' matches “' + slug + '”. Search for one, or pick it from the list below.' })
+    ]);
+    entity.parentNode.insertBefore(box, entity);
+  }
+
+  function clearNotFound() {
+    var old = document.getElementById('not-found');
+    if (old) old.remove();
   }
 
   function render(d) {
     var isAgency = d.kind === 'agency';
+    clearNotFound();
     entity.hidden = false;
     browse.hidden = true;
-    document.title = d.title + ' — The Pay Gap';
+    document.title = d.title + ' · The Pay Gap';
 
     var prof   = d.profile.filter(function (r) { return !r.suppressed; });
     var latest = prof[prof.length - 1];
@@ -273,7 +296,7 @@
         rows: rows,
         sortKey: 'n', sortDir: 'desc',
         limit: 25,
-        searchPlaceholder: 'Search ' + rows.length + ' ' + scope + 's…',
+        searchPlaceholder: 'Search ' + rows.length + ' ' + (scope === 'agency' ? 'agencies' : 'titles') + '…',
         csv: scope === 'agency' ? 'downloads/real_wages_by_agency.csv'
                                 : 'downloads/salary_by_title.csv',
         columns: [
