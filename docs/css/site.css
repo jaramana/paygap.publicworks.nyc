@@ -268,6 +268,61 @@ main { padding-bottom: 5rem; }
 .nav a:hover { background: var(--paper-sunken); color: var(--ink); }
 .nav a[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
 
+/* On a phone the nav folds behind a menu button, which keeps the masthead to
+   one row. Open, the links fill the screen under the masthead on a sheet that
+   covers the page without moving it, and the page stops scrolling. Anything
+   after the links, such as a theme or language control, sits in .nav-end at
+   the foot of the sheet. The button's three lines turn into a cross. Closed,
+   the links leave the tab order once the fade ends. */
+/* Visible to a screen reader, not on screen. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.nav-end { display: contents; }
+.nav-toggle { display: none; }
+@media (max-width: 40rem) {
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: auto; width: 2.2rem; height: 2.14rem; padding: 0;
+    color: var(--ink); background: none; border: 0; border-radius: 8px; cursor: pointer;
+    transition: background-color .2s ease;
+  }
+  .nav-toggle:hover, .menu-open .nav-toggle { background: var(--paper-sunken); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .nav-toggle svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .nav-toggle path {
+    transform-box: view-box; transform-origin: 12px 12px;
+    transition: transform .28s cubic-bezier(.2, .7, .2, 1), opacity .18s ease;
+  }
+  .menu-open .nav-toggle .bar-top { transform: rotate(45deg) translateY(5px); }
+  .menu-open .nav-toggle .bar-mid { opacity: 0; }
+  .menu-open .nav-toggle .bar-bottom { transform: rotate(-45deg) translateY(-5px); }
+
+  .masthead { position: relative; z-index: 30; }
+  .nav {
+    position: fixed; top: var(--sheet-top, var(--masthead-h)); left: 0; right: 0; bottom: 0;
+    flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: .1rem; margin: 0;
+    padding: .4rem .65rem max(1.25rem, env(safe-area-inset-bottom));
+    overflow-y: auto; overscroll-behavior: contain;
+    background: var(--paper);
+    opacity: 0; visibility: hidden; transform: translateY(-4px);
+    transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  }
+  .menu-open .nav { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .nav a { padding: .7rem .6rem; font-size: 1rem; }
+  .nav-end {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .15rem;
+    margin-top: auto; padding-top: .6rem; border-top: 1px solid var(--rule);
+  }
+  .nav-end a { padding: .45rem .6rem; font-size: .9rem; }
+  html.menu-locked { overflow: hidden; }
+}
+@media (max-width: 40rem) and (prefers-reduced-motion: reduce) {
+  .nav, .nav-toggle, .nav-toggle path { transition: none; }
+}
+
 .theme-toggle {
   background: none; border: 1px solid var(--rule); color: var(--ink-soft);
   border-radius: 6px; cursor: pointer; padding: .3rem .5rem;
@@ -702,11 +757,9 @@ code {
    so a short page filling in does not shove it either. */
 @media screen { main { min-height: calc(100vh - var(--masthead-h)); } }
 /* The masthead is drawn by script. Until it is, its slot holds the height
-   it will have at that width: one row, or the nav wrapping to two or three. */
+   it will have: one row at every width, because the nav folds behind a menu
+   button on a phone. */
 header[data-chrome="masthead"]:empty { display: block; min-height: 52.83px; }
-@media (max-width: 35.7rem) { header[data-chrome="masthead"]:empty { min-height: 104.83px; } }
-@media (max-width: 27.6rem) { header[data-chrome="masthead"]:empty { min-height: 132.41px; } }
-@media (max-width: 24.55rem) { header[data-chrome="masthead"]:empty { min-height: 141.45px; } }
 .statusline[data-status]:empty { min-height: 20.47px; }
 @media (max-width: 40.85rem) { .statusline[data-status]:empty { min-height: 40.94px; } }
 @media (max-width: 22.4rem) { .statusline[data-status]:empty { min-height: 61.41px; } }
